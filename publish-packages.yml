@@ -9,10 +9,10 @@ pool:
 
 steps:
 - task: Npm@1
-  displayName: 'npm publish fiftyone.pipeline.geolocation'
+  displayName: 'npm publish fiftyone.geolocation'
   inputs:
     command: publish
-    workingDir: fiftyone.pipeline.geolocation
+    workingDir: fiftyone.geolocation
     verbose: false
     publishRegistry: useFeed
     publishFeed: 'd2431f86-c1e6-4d8b-8d27-311cf3614847'
