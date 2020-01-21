@@ -100,7 +100,7 @@ let getCountry = async function (latitude, longitude) {
 
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + "/../");
 
-let pipeline = new FiftyOneDegreesDeviceDetection.deviceDetectionPipelineBuilder({
+let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
     "resourceKey": "AQS5HKcyHJbECm6E10g"
 }).build();
 

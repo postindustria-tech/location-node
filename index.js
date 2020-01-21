@@ -20,4 +20,7 @@
  * such notice(s) shall fulfill the requirements of that article.
  * ********************************************************************* */
 
-module.exports = require("./geolocation");
+module.exports = {
+    "geoLocationCloud": require("./geoLocationCloud"),
+    "geoLocationPipelineBuilder": require("./geoLocationPipelineBuilder")
+};

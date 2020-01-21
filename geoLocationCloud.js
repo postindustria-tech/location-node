@@ -39,7 +39,7 @@ class geoLocationCloud extends engine {
 
         super(...arguments);
 
-        if (engineKey === "fiftyonedegrees") {
+        if (locationProvider === "fiftyonedegrees") {
 
             this.dataKey = "location";
 
@@ -73,13 +73,13 @@ class geoLocationCloud extends engine {
 
             let result = {};
 
-            Object.entries(cloudData.device).forEach(function([key,value]){
+            Object.entries(cloudData.location).forEach(function([key,value]){
 
-                result[key] = new aspectPropertyValue();
+                result[key] = new engines.aspectPropertyValue();
 
-                if(cloudData.nullValueReasons[this.dataKey + "." + key]){
+                if(cloudData.nullValueReasons[engine.dataKey + "." + key]){
 
-                    result[key].noValueMessage = cloudData.nullValueReasons[this.dataKey + "." + key];
+                    result[key].noValueMessage = cloudData.nullValueReasons[engine.dataKey + "." + key];
 
                 } else {
 
@@ -113,9 +113,9 @@ class geoLocationCloud extends engine {
 
                 let cloudProperties = flowData.get("cloud").get("properties");
 
-                let deviceProperties = cloudProperties.device;
+                let locationProperties = cloudProperties.location;
 
-                engine.properties = deviceProperties;
+                engine.properties = locationProperties;
 
                 engine.updateProperties().then(resolve);
 
@@ -131,4 +131,4 @@ class geoLocationCloud extends engine {
 
 }
 
-module.exports = deviceDetectionGeolocation;
+module.exports = geoLocationCloud;

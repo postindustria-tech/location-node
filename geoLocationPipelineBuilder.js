@@ -64,7 +64,7 @@ class geoLocationPipelineBuilder extends pipelineBuilder {
 
         // Then add the cloud geo-location engine
 
-        this.flowElements.push(new geoLocationCloud());
+        this.flowElements.push(new geoLocationCloud({locationProvider: locationProvider}));
 
         // Add a JavaScript Bundler flowElement
 
