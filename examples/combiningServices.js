@@ -21,11 +21,11 @@
  * ********************************************************************* */
 
 /**
-@example cloud/gettingStarted.js
+@example cloud/combiningServices.js
 
-Getting started example of using the 51Degrees geo-location Cloud to determine the country for a given longitude and latitude.
+Example of using the 51Degrees geo-location Cloud alongside 51Degrees device detection to determine the country and device for a given longitude, latitude and User-Agent.
 
-This example is available in full on [GitHub](https://github.com/51Degrees/location-node/blob/release/v4.1.0/examples/cloud/gettingStarted.js). 
+This example is available in full on [GitHub](https://github.com/51Degrees/location-node/blob/release/v4.1.0/examples/cloud/combiningServices.js). 
 (During the beta period, this repository will be private. 
 [Contact us](mailto:support.51degrees.com) to request access) 
 
@@ -36,21 +36,24 @@ that entitle you to increased request limits and/or paid-for properties.
 
 You can create a resource key using the 51Degrees [Configurator](https://configure.51degrees.com).
 
-Firstly require the fiftyone.geolocation modules which contain all of the pipeline specific classes we will be using in this example.
+Firstly require the fiftyone.geolocation and fiftyone.devicedetection modules which contain all of the pipeline specific classes we will be using in this example.
 
 ```
 
-const FiftyOneDegreesGeoLocation = require('fiftyone.geolocation')
+const FiftyOneDegreesGeoLocation = require('fiftyone.geolocation');
+cont FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
 
 ```
 
-Build the geo-location pipeline using the builder that comes with the fiftyone.geolocation module and pass in the desired settings. Additional flowElements / engines can be added before the build() method is called if needed.
+Build the geo-location pipeline using the builder that comes with the fiftyone.geolocation module and pass in the desired settings, adding the device detection cloud engine.
 
 ```
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
     "resourceKey": "AQS5HKcyHJbECm6E10g"
-}).build();
+})
+.add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
+.build();
 
 ```
 
@@ -64,22 +67,25 @@ pipeline.on("error", console.error);
 
 A pipeline can create a flowData element which is where evidence is added (for example from a device web request). This evidence is then processed by the pipeline through the flowData's `process()` method (which returns a promise to work with both syncronous and asyncronous pipelines).
 
-Here is an example of a function that gets the country from a longitude and latidude. In some cases the country value is not meaningful so instead of returning a default, a .hasValue() check can be made. Please see the failureToMatch example for more information.
+Here is an example of a function that gets the country and device from a longitude, latidude and User-Agent. In some cases the country value is not meaningful so instead of returning a default, a .hasValue() check can be made. Please see the failureToMatch example for more information.
 
 ```
 
-let getCountry = async function (latitude, longitude) {
+let getProperties = async function (latitude, longitude, userAgent) {
 
-    // Create a flow data element and process the latitude and longitude.
+    // Create a flow data element and process the latitude, longitude
+    // and User-Agent.
     let flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
     flowData.evidence.add("location.latitude", latitude);
     flowData.evidence.add("location.longitude", longitude);
+    flowData.evidence.add("header.user-agent", userAgent);
 
     await flowData.process();
 
     let country = flowData.location.country;
+    let isMobile = flowData.location.ismobile;
 
     if (country.hasValue) {
 
@@ -89,6 +95,17 @@ let getCountry = async function (latitude, longitude) {
 
         // Echo out why the value isn't meaningful
         console.log(country.noValueMessage);
+
+    }
+
+    if (isMobile.hasValue) {
+
+        console.log(`IsMobile: ${isMobile.value}`);
+
+    } else {
+
+        // Echo out why the value isn't meaningful
+        console.log(isMobile.noValueMessage);
 
     }
 
@@ -99,26 +116,32 @@ let getCountry = async function (latitude, longitude) {
 */
 
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + "/../");
+const FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
 
 let pipeline = new FiftyOneDegreesDeviceDetection.deviceDetectionPipelineBuilder({
     "resourceKey": "AQS5HKcyHJbECm6E10g"
-}).build();
+})
+.add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
+.build();
 
 // Logging of errors and other messages. Valid logs types are info, debug, warn, error
 pipeline.on("error", console.error);
 
-let getCountry = async function (latitude, longitude) {
+let getProperties = async function (latitude, longitude, userAgent) {
 
-    // Create a flow data element and process the latitude and longitude.
+    // Create a flow data element and process the latitude, longitude
+    // and User-Agent.
     let flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
     flowData.evidence.add("location.latitude", latitude);
     flowData.evidence.add("location.longitude", longitude);
+    flowData.evidence.add("header.user-agent", userAgent);
 
     await flowData.process();
 
     let country = flowData.location.country;
+    let isMobile = flowData.location.ismobile;
 
     if (country.hasValue) {
 
@@ -131,6 +154,18 @@ let getCountry = async function (latitude, longitude) {
 
     }
 
+    if (isMobile.hasValue) {
+
+        console.log(`IsMobile: ${isMobile.value}`);
+
+    } else {
+
+        // Echo out why the value isn't meaningful
+        console.log(isMobile.noValueMessage);
+
+    }
 }
 
-getCountry("51.458048", "-0.9822207999999999");
+let mobileUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C114';
+
+getCountry("51.458048", "-0.9822207999999999", mobileUserAgent);
