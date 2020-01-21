@@ -71,12 +71,4 @@ if(isAsync) {
         testExample({ file: (__dirname) + "/gettingStarted.js" });
 
     });
-
-    test('cloud combining services', (done) => {
-
-        setTimeout(done, 1000);
-
-        testExample({ file: (__dirname) + "/combiningServices.js" });
-
-    });
 }

@@ -34,6 +34,9 @@ The resource key is used as short-hand to store the particular set of
 properties you are interested in as well as any associated license keys 
 that entitle you to increased request limits and/or paid-for properties.
 
+You will also need to install the fiftyone.devicedetection package with
+`npm install fiftyone.devicedetection`.
+
 You can create a resource key using the 51Degrees [Configurator](https://configure.51degrees.com).
 
 Firstly require the fiftyone.geolocation and fiftyone.devicedetection modules which contain all of the pipeline specific classes we will be using in this example.
@@ -168,4 +171,4 @@ let getProperties = async function (latitude, longitude, userAgent) {
 
 let mobileUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C114';
 
-getCountry("51.458048", "-0.9822207999999999", mobileUserAgent);
+getProperties("51.458048", "-0.9822207999999999", mobileUserAgent);
