@@ -35,6 +35,17 @@ Examples can be found in the `examples/` folder. See below for a list of example
 |gettingStarted.js|This example uses geo-location to determine the country from a longitude and latidude.|Cloud|
 |combiningServices.js|This example uses geo-location alongside device detection to determine the country and device.|Cloud|
 
+## Tests
+
+In this repository, there are tests for the examples. 
+You will need to install jest to run them:
+
+`npm install jest --global`
+
+To run the tests, then call:
+
+`jest`
+
 ## Project documentation
 
 For complete documentation on the Pipeline API and associated engines, see the [51Degrees documentation site][Documentation].
