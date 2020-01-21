@@ -32,7 +32,7 @@ Examples can be found in the `examples/` folder. See below for a list of example
 
 |Example|Description|Implemtation|
 |-------|-----------|------------|
-|gettingStarted.js|This example uses geo-location to determine the country from a longitude and latidude.|Cloud|
+|gettingStarted.js|This example uses geo-location to determine the country from a longitude and latitude.|Cloud|
 |combiningServices.js|This example uses geo-location alongside device detection to determine the country and device.|Cloud|
 
 ## Tests

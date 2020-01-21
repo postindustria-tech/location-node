@@ -122,7 +122,7 @@ let getCountry = async function (latitude, longitude) {
 
     if (country.hasValue) {
 
-        console.log(`Country: ${country.value}`);
+        console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
 
     } else {
 

@@ -148,7 +148,7 @@ let getProperties = async function (latitude, longitude, userAgent) {
 
     if (country.hasValue) {
 
-        console.log(`Country: ${country.value}`);
+        console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
 
     } else {
 
@@ -159,7 +159,7 @@ let getProperties = async function (latitude, longitude, userAgent) {
 
     if (isMobile.hasValue) {
 
-        console.log(`IsMobile: ${isMobile.value}`);
+        console.log(`Does the User-Agent '${userAgent}' represent a mobile device? ${isMobile.value}`);
 
     } else {
 
