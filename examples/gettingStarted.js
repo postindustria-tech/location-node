@@ -21,7 +21,7 @@
  * ********************************************************************* */
 
 /**
-@example cloud/gettingStarted.js
+@example gettingStarted.js
 
 Getting started example of using the 51Degrees geo-location Cloud to determine the country for a given longitude and latitude.
 

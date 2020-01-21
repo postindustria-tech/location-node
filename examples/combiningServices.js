@@ -21,7 +21,7 @@
  * ********************************************************************* */
 
 /**
-@example cloud/combiningServices.js
+@example combiningServices.js
 
 Example of using the 51Degrees geo-location Cloud alongside 51Degrees device detection to determine the country and device for a given longitude, latitude and User-Agent.
 
