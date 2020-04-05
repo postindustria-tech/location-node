@@ -113,8 +113,8 @@ let getCountry = async function (latitude, longitude) {
     let flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add("location.latitude", latitude);
-    flowData.evidence.add("location.longitude", longitude);
+    flowData.evidence.add("query.51D_Pos_latitude", latitude);
+    flowData.evidence.add("query.51D_Pos_longitude", longitude);
 
     await flowData.process();
 

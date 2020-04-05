@@ -73,13 +73,13 @@ class geoLocationCloud extends engine {
 
             let result = {};
 
-            Object.entries(cloudData.location).forEach(function([key,value]){
+            Object.entries(cloudData[engine.dataKey]).forEach(function([key,value]){
 
                 result[key] = new engines.aspectPropertyValue();
 
-                if(cloudData.nullValueReasons[engine.dataKey + "." + key]){
+                if(cloudData[engine.dataKey][key + "nullreason"]){
 
-                    result[key].noValueMessage = cloudData.nullValueReasons[engine.dataKey + "." + key];
+                    result[key].noValueMessage = cloudData[engine.dataKey][key + "nullreason"];
 
                 } else {
 

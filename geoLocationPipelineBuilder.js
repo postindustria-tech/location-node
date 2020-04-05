@@ -46,7 +46,7 @@ class geoLocationPipelineBuilder extends pipelineBuilder {
      * @param {String} options.locationProvider // the provider to request data from. Either "fiftyonedegrees" or "digitalelement".
      * 
     */
-    constructor({ shareUsage = true, resourceKey = null, locationProvider = "fiftyonedegrees" }) {
+    constructor({ shareUsage = true, resourceKey = null, locationProvider = "fiftyonedegrees", baseURL = null}) {
 
         super(...arguments);
 
@@ -60,7 +60,12 @@ class geoLocationPipelineBuilder extends pipelineBuilder {
 
         // First we need the cloudRequestEngine
 
-        this.flowElements.push(new cloudRequestEngine({ resourceKey: resourceKey }));
+        let cloudRequestEngineOptions = { resourceKey: resourceKey };
+        if (baseURL !== null) {
+            cloudRequestEngineOptions.baseURL = baseURL;
+        }
+
+        this.flowElements.push(new cloudRequestEngine(cloudRequestEngineOptions));
 
         // Then add the cloud geo-location engine
 
