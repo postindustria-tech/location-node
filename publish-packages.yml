@@ -30,10 +30,10 @@ steps:
 
 # Set version number.
 - task: Npm@1
-  displayName: 'npm version fiftyone.devicedetection'
+  displayName: 'npm version fiftyone.geolocation'
   inputs:
     command: custom
-    workingDir: fiftyone.devicedetection
+    workingDir: fiftyone.geolocation
     verbose: true
     customCommand: version $(GitVersion.SemVer)    
   continueOnError: true
