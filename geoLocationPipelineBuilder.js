@@ -28,7 +28,7 @@ let require51 = (requestedPackage) => {
     }
 }
 
-const geoLocationCloud = require("./geolocationCloud");
+const geoLocationCloud = require("./geoLocationCloud");
 const cloudRequestEngine = require51("fiftyone.pipeline.cloudrequestengine");
 const javaScriptBundler = require51("fiftyone.pipeline.javascriptbundler").javascriptBundler;
 const pipelineBuilder = require51("fiftyone.pipeline.core").pipelineBuilder;

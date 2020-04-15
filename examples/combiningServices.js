@@ -25,9 +25,7 @@
 
 Example of using the 51Degrees geo-location Cloud alongside 51Degrees device detection to determine the country and device for a given longitude, latitude and User-Agent.
 
-This example is available in full on [GitHub](https://github.com/51Degrees/location-node/blob/release/v4.1.0/examples/cloud/combiningServices.js). 
-(During the beta period, this repository will be private. 
-[Contact us](mailto:support.51degrees.com) to request access) 
+This example is available in full on [GitHub](https://github.com/51Degrees/location-node/blob/master/examples/cloud/combiningServices.js). 
 
 To run this example, you will need to create a **resource key**. 
 The resource key is used as short-hand to store the particular set of 
