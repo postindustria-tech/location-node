@@ -47,7 +47,7 @@ Build the geo-location pipeline using the builder that comes with the fiftyone.g
 ```
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": "AQS5HKcyHJbECm6E10g"
+    "resourceKey": localResourceKey
 }).build();
 
 ```
@@ -98,8 +98,21 @@ let getCountry = async function (latitude, longitude) {
 
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + "/../");
 
+// You need to create a resource key at https://configure.51degrees.com and 
+// paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
+let localResourceKey = "!!YOUR_RESOURCE_KEY!!";
+// Check if there is a resource key in the global variable and use
+// it if there is one. (This is used by automated tests to pass in a key)
+try {
+    localResourceKey = resourceKey;
+} catch (e) {
+    if (e instanceof ReferenceError) {}
+}
+
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": "AQS5HKcyHJbECm6E10g"
+    "resourceKey": localResourceKey,
+    // temporary url for location tests
+    "baseURL" : "http://ts.51degrees.com/api/v4/" 
 }).build();
 
 // Logging of errors and other messages. Valid logs types are info, debug, warn, error

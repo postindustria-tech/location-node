@@ -71,4 +71,7 @@ if(isAsync) {
         testExample({ file: (__dirname) + "/gettingStarted.js" });
 
     });
+} else {
+    // Skip if async is not available (e.g node 6)
+    test.skip('Workaround', () => 1)
 }
