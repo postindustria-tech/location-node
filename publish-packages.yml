@@ -4,8 +4,7 @@ trigger:
   - release/*  
     
 pool:
-  name: Azure Pipelines
-  demands: npm
+  vmImage: 'ubuntu-latest'
 
 variables: 
   - group: PackageFeedAccessToken
