@@ -32,10 +32,9 @@ steps:
 - task: Npm@1
   displayName: 'npm version fiftyone.geolocation'
   inputs:
-    command: custom
-    workingDir: fiftyone.geolocation
-    verbose: true
-    customCommand: version $(GitVersion.SemVer)    
+    command: 'custom'
+    workingDir: '/'
+    customCommand: 'version $(GitVersion.SemVer)'
   continueOnError: true
   condition: succeededOrFailed()
 
