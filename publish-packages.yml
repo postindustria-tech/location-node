@@ -33,7 +33,7 @@ steps:
   displayName: 'npm version fiftyone.geolocation'
   inputs:
     command: 'custom'
-    workingDir: '/'
+    workingDir: '$(System.DefaultWorkingDirectory)'
     customCommand: 'version $(GitVersion.SemVer)'
   continueOnError: true
   condition: succeededOrFailed()
