@@ -115,8 +115,7 @@ if (localResourceKey.substr(0, 2) === '!!') {
     'replacing !!YOUR_RESOURCE_KEY!!.');
   console.log('Make sure to include the ismobile property ' +
     'as it is used by this example.');
-}
-else {   
+} else {
   const pipeline = new FiftyOneDegreesGeoLocation.GeoLocationPipelineBuilder({
     resourceKey: localResourceKey
   }).build();
