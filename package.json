@@ -33,5 +33,10 @@
   "license": "EUPL-1.2",
   "bugs": {
     "url": "https://github.com/51Degrees/location-node/issues"
+  },      
+  "jest": {
+    "globals": {
+      "resourceKey": "!!YOUR_RESOURCE_KEY!!"
+    }
   }
 }
