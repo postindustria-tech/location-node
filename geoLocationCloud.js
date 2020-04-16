@@ -29,10 +29,10 @@ const require51 = (requestedPackage) => {
 };
 
 const engines = require51('fiftyone.pipeline.engines');
-const engine = engines.engine;
-const aspectDataDictionary = engines.aspectDataDictionary;
+const Engine = engines.Engine;
+const AspectDataDictionary = engines.AspectDataDictionary;
 
-class geoLocationCloud extends engine {
+class GeoLocationCloud extends Engine {
   // engineKey = fiftyonedegrees or digitalelement
   constructor ({ locationProvider }) {
     super(...arguments);
@@ -59,7 +59,7 @@ class geoLocationCloud extends engine {
       const result = {};
 
       Object.entries(cloudData[engine.dataKey]).forEach(function ([key, value]) {
-        result[key] = new engines.aspectPropertyValue();
+        result[key] = new engines.AspectPropertyValue();
 
         if (cloudData[engine.dataKey][key + 'nullreason']) {
           result[key].noValueMessage = cloudData[engine.dataKey][key + 'nullreason'];
@@ -68,7 +68,7 @@ class geoLocationCloud extends engine {
         }
       });
 
-      const data = new aspectDataDictionary(
+      const data = new AspectDataDictionary(
         {
           flowElement: engine,
           contents: result
@@ -99,4 +99,4 @@ class geoLocationCloud extends engine {
   }
 }
 
-module.exports = geoLocationCloud;
+module.exports = GeoLocationCloud;

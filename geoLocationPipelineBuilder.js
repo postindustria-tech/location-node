@@ -28,15 +28,12 @@ const require51 = (requestedPackage) => {
   }
 };
 
-const geoLocationCloud = require('./geoLocationCloud');
-const cloudRequestEngine = require51('fiftyone.pipeline.cloudrequestengine');
-const javaScriptBundler = require51('fiftyone.pipeline.javascriptbundler').javascriptBundler;
-const pipelineBuilder = require51('fiftyone.pipeline.core').pipelineBuilder;
-const engines = require51('fiftyone.pipeline.engines');
-const lruCache = engines.lruCache;
-const shareUsageElement = require51('fiftyone.pipeline.engines.fiftyone').shareUsage;
+const GeoLocationCloud = require('./geoLocationCloud');
+const CloudRequestEngine = require51('fiftyone.pipeline.cloudrequestengine');
+const PipelineBuilder = require51('fiftyone.pipeline.core').PipelineBuilder;
+const ShareUsageElement = require51('fiftyone.pipeline.engines.fiftyone').ShareUsage;
 
-class geoLocationPipelineBuilder extends pipelineBuilder {
+class GeoLocationPipelineBuilder extends PipelineBuilder {
   /**
      * Extension of pipelineBuilder class that allows for the quick generation of a geo-location pipeline. Adds share usage, caching with simple paramater changes
      * @param {Object} options
@@ -51,7 +48,7 @@ class geoLocationPipelineBuilder extends pipelineBuilder {
     // Check if share usage enabled and add it to the pipeline if so
 
     if (shareUsage) {
-      this.flowElements.push(new shareUsageElement());
+      this.flowElements.push(new ShareUsageElement());
     }
 
     // First we need the cloudRequestEngine
@@ -61,16 +58,12 @@ class geoLocationPipelineBuilder extends pipelineBuilder {
       cloudRequestEngineOptions.baseURL = baseURL;
     }
 
-    this.flowElements.push(new cloudRequestEngine(cloudRequestEngineOptions));
+    this.flowElements.push(new CloudRequestEngine(cloudRequestEngineOptions));
 
     // Then add the cloud geo-location engine
 
-    this.flowElements.push(new geoLocationCloud({ locationProvider: locationProvider }));
-
-    // Add a JavaScript Bundler flowElement
-
-    this.flowElements.push(new javaScriptBundler());
+    this.flowElements.push(new GeoLocationCloud({ locationProvider: locationProvider }));
   }
 }
 
-module.exports = geoLocationPipelineBuilder;
+module.exports = GeoLocationPipelineBuilder;
