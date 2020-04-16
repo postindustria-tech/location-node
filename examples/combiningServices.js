@@ -51,7 +51,7 @@ Build the geo-location pipeline using the builder that comes with the fiftyone.g
 ```
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": localResourceKey
+    'resourceKey': localResourceKey
 })
 .add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
 .build();
@@ -62,7 +62,7 @@ Each pipeline has an event emitter attached you can listen to to catch messages.
 
 ```
 
-pipeline.on("error", console.error);
+pipeline.on('error', console.error);
 
 ```
 
@@ -79,9 +79,9 @@ let getProperties = async function (latitude, longitude, userAgent) {
     let flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add("location.latitude", latitude);
-    flowData.evidence.add("location.longitude", longitude);
-    flowData.evidence.add("header.user-agent", userAgent);
+    flowData.evidence.add('location.latitude', latitude);
+    flowData.evidence.add('location.longitude', longitude);
+    flowData.evidence.add('header.user-agent', userAgent);
 
     await flowData.process();
 
@@ -119,25 +119,25 @@ let getProperties = async function (latitude, longitude, userAgent) {
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + '/../');
 const FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
 
-// You need to create a resource key at https://configure.51degrees.com and 
+// You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
-// Make sure to include the isMobile and country properties as they 
-// are used by this example. 
-let localResourceKey = "!!YOUR_RESOURCE_KEY!!";
+// Make sure to include the isMobile and country properties as they
+// are used by this example.
+let localResourceKey = '!!YOUR_RESOURCE_KEY!!';
 // Check if there is a resource key in the global variable and use
 // it if there is one. (This is used by automated tests to pass in a key)
 try {
-    localResourceKey = resourceKey;
+  localResourceKey = resourceKey;
 } catch (e) {
-    if (e instanceof ReferenceError) {}
+  if (e instanceof ReferenceError) {}
 }
 
-if(localResourceKey.substr(0, 2) == "!!") {
-    console.log("You need to create a resource key at " +
-        "https://configure.51degrees.com and paste it into the code, " +
-        "replacing !!YOUR_RESOURCE_KEY!!.");
-    console.log("Make sure to include the ismobile property " +
-        "as it is used by this example.");
+if (localResourceKey.substr(0, 2) === '!!') {
+  console.log('You need to create a resource key at ' +
+    'https://configure.51degrees.com and paste it into the code, ' +
+    'replacing !!YOUR_RESOURCE_KEY!!.');
+  console.log('Make sure to include the ismobile property ' +
+    'as it is used by this example.');
 }
 else {    
   const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({

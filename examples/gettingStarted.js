@@ -47,7 +47,7 @@ Build the geo-location pipeline using the builder that comes with the fiftyone.g
 ```
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": localResourceKey
+    'resourceKey': localResourceKey
 }).build();
 
 ```
@@ -56,7 +56,7 @@ Each pipeline has an event emitter attached you can listen to to catch messages.
 
 ```
 
-pipeline.on("error", console.error);
+pipeline.on('error', console.error);
 
 ```
 
@@ -72,8 +72,8 @@ let getCountry = async function (latitude, longitude) {
     let flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add("location.latitude", latitude);
-    flowData.evidence.add("location.longitude", longitude);
+    flowData.evidence.add('location.latitude', latitude);
+    flowData.evidence.add('location.longitude', longitude);
 
     await flowData.process();
 
@@ -109,22 +109,22 @@ try {
   if (e instanceof ReferenceError) {}
 }
 
-if(localResourceKey.substr(0, 2) == "!!") {
-    console.log("You need to create a resource key at " +
-        "https://configure.51degrees.com and paste it into the code, " +
-        "replacing !!YOUR_RESOURCE_KEY!!.");
-    console.log("Make sure to include the ismobile property " +
-        "as it is used by this example.");
+if (localResourceKey.substr(0, 2) === '!!') {
+  console.log('You need to create a resource key at ' +
+    'https://configure.51degrees.com and paste it into the code, ' +
+    'replacing !!YOUR_RESOURCE_KEY!!.');
+  console.log('Make sure to include the ismobile property ' +
+    'as it is used by this example.');
 }
 else {   
-    const pipeline = new FiftyOneDegreesGeoLocation.GeoLocationPipelineBuilder({
+  const pipeline = new FiftyOneDegreesGeoLocation.GeoLocationPipelineBuilder({
     resourceKey: localResourceKey
-    }).build();
+  }).build();
 
-    // Logging of errors and other messages. Valid logs types are info, debug, warn, error
-    pipeline.on('error', console.error);
+  // Logging of errors and other messages. Valid logs types are info, debug, warn, error
+  pipeline.on('error', console.error);
 
-    const getCountry = async function (latitude, longitude) {
+  const getCountry = async function (latitude, longitude) {
     // Create a flow data element and process the latitude and longitude.
     const flowData = pipeline.createFlowData();
 
@@ -137,12 +137,12 @@ else {
     const country = flowData.location.country;
 
     if (country.hasValue) {
-        console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
+      console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
     } else {
-        // Echo out why the value isn't meaningful
-        console.log(country.noValueMessage);
+      // Echo out why the value isn't meaningful
+      console.log(country.noValueMessage);
     }
-    };
+  };
 
-    getCountry('51.458048', '-0.9822207999999999');
+  getCountry('51.458048', '-0.9822207999999999');
 }
