@@ -110,9 +110,7 @@ try {
 }
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": localResourceKey,
-    // temporary url for location tests
-    "baseURL" : "http://ts.51degrees.com/api/v4/" 
+    "resourceKey": localResourceKey
 }).build();
 
 // Logging of errors and other messages. Valid logs types are info, debug, warn, error

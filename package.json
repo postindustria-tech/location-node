@@ -16,11 +16,10 @@
     "Joseph Dix <joseph@51degrees.com> (https://51degrees.com)"
   ],
   "dependencies": {
-    "fiftyone.pipeline.core": "^4.1.0-beta",
-    "fiftyone.pipeline.engines": "^4.1.0-beta",
-    "fiftyone.pipeline.engines.fiftyone": "^4.1.0-beta",
-    "fiftyone.pipeline.javascriptbundler": "^4.1.0-beta",
-    "fiftyone.pipeline.cloudrequestengine": "^4.1.0-beta"
+    "fiftyone.pipeline.core": "^4.1.0",
+    "fiftyone.pipeline.engines": "^4.1.0",
+    "fiftyone.pipeline.engines.fiftyone": "^4.1.0",
+    "fiftyone.pipeline.cloudrequestengine": "^4.1.0"
   },
   "devDependencies": {
     "jest": "^24.9.0"
