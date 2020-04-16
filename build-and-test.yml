@@ -30,6 +30,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    rm package.json
     content='{ 
       "name": "geolocation-node-tests", 
       "version": "1.0.0", 
@@ -60,6 +61,11 @@ steps:
         },
       "jest-junit": {
           "outputName": "'"$NODE_VERSION"'.xml"    
+        },      
+      "jest": {
+          "globals": {
+            "resourceKey": "!!YOUR_RESOURCE_KEY!!"
+          }
         }
       }'
     echo $content
