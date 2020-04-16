@@ -33,13 +33,13 @@ steps:
     content='{ 
       "name": "geolocation-node-tests", 
       "version": "1.0.0", 
-      "description": "Temporary package to allow all tests to run using the local code as dependencies", 
+      "description": "Temporary package to allow us to output an test report with the node version number in the name", 
       "main": "index.js", 
       "scripts": { 
         "test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura" 
         }, 
       "repository": { 
-        "type": "git", "url": "https://github.com/51Degrees/pipeline-node" 
+        "type": "git", "url": "https://github.com/51Degrees/location-node" 
         }, 
       "author": "51Degrees",
       "dependencies": { 
