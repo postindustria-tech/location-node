@@ -100,7 +100,7 @@ const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) 
 
 // You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
-let localResourceKey = 'AQS5HKcyQX4Dop_U10g';
+let localResourceKey = '!!YOUR_RESOURCE_KEY!!';
 // Check if there is a resource key in the global variable and use
 // it if there is one. (This is used by automated tests to pass in a key)
 try {
@@ -109,31 +109,40 @@ try {
   if (e instanceof ReferenceError) {}
 }
 
-const pipeline = new FiftyOneDegreesGeoLocation.GeoLocationPipelineBuilder({
-  resourceKey: localResourceKey
-}).build();
+if(localResourceKey.substr(0, 2) == "!!") {
+    console.log("You need to create a resource key at " +
+        "https://configure.51degrees.com and paste it into the code, " +
+        "replacing !!YOUR_RESOURCE_KEY!!.");
+    console.log("Make sure to include the ismobile property " +
+        "as it is used by this example.");
+}
+else {   
+    const pipeline = new FiftyOneDegreesGeoLocation.GeoLocationPipelineBuilder({
+    resourceKey: localResourceKey
+    }).build();
 
-// Logging of errors and other messages. Valid logs types are info, debug, warn, error
-pipeline.on('error', console.error);
+    // Logging of errors and other messages. Valid logs types are info, debug, warn, error
+    pipeline.on('error', console.error);
 
-const getCountry = async function (latitude, longitude) {
-  // Create a flow data element and process the latitude and longitude.
-  const flowData = pipeline.createFlowData();
+    const getCountry = async function (latitude, longitude) {
+    // Create a flow data element and process the latitude and longitude.
+    const flowData = pipeline.createFlowData();
 
-  // Add the longitude and latitude as evidence
-  flowData.evidence.add('query.51D_Pos_latitude', latitude);
-  flowData.evidence.add('query.51D_Pos_longitude', longitude);
+    // Add the longitude and latitude as evidence
+    flowData.evidence.add('query.51D_Pos_latitude', latitude);
+    flowData.evidence.add('query.51D_Pos_longitude', longitude);
 
-  await flowData.process();
+    await flowData.process();
 
-  const country = flowData.location.country;
+    const country = flowData.location.country;
 
-  if (country.hasValue) {
-    console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
-  } else {
-    // Echo out why the value isn't meaningful
-    console.log(country.noValueMessage);
-  }
-};
+    if (country.hasValue) {
+        console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
+    } else {
+        // Echo out why the value isn't meaningful
+        console.log(country.noValueMessage);
+    }
+    };
 
-getCountry('51.458048', '-0.9822207999999999');
+    getCountry('51.458048', '-0.9822207999999999');
+}

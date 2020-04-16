@@ -51,7 +51,7 @@ Build the geo-location pipeline using the builder that comes with the fiftyone.g
 ```
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": "AQS5HKcyHJbECm6E10g"
+    "resourceKey": localResourceKey
 })
 .add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
 .build();
@@ -119,45 +119,67 @@ let getProperties = async function (latitude, longitude, userAgent) {
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + '/../');
 const FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
 
-const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({
-  resourceKey: resourceKey
-})
-  .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud())
-  .build();
+// You need to create a resource key at https://configure.51degrees.com and 
+// paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
+// Make sure to include the isMobile and country properties as they 
+// are used by this example. 
+let localResourceKey = "!!YOUR_RESOURCE_KEY!!";
+// Check if there is a resource key in the global variable and use
+// it if there is one. (This is used by automated tests to pass in a key)
+try {
+    localResourceKey = resourceKey;
+} catch (e) {
+    if (e instanceof ReferenceError) {}
+}
 
-// Logging of errors and other messages. Valid logs types are info, debug, warn, error
-pipeline.on('error', console.error);
+if(localResourceKey.substr(0, 2) == "!!") {
+    console.log("You need to create a resource key at " +
+        "https://configure.51degrees.com and paste it into the code, " +
+        "replacing !!YOUR_RESOURCE_KEY!!.");
+    console.log("Make sure to include the ismobile property " +
+        "as it is used by this example.");
+}
+else {    
+  const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({
+    resourceKey: localResourceKey
+  })
+    .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud())
+    .build();
 
-const getProperties = async function (latitude, longitude, userAgent) {
-  // Create a flow data element and process the latitude, longitude
-  // and User-Agent.
-  const flowData = pipeline.createFlowData();
+  // Logging of errors and other messages. Valid logs types are info, debug, warn, error
+  pipeline.on('error', console.error);
 
-  // Add the longitude and latitude as evidence
-  flowData.evidence.add('location.latitude', latitude);
-  flowData.evidence.add('location.longitude', longitude);
-  flowData.evidence.add('header.user-agent', userAgent);
+  const getProperties = async function (latitude, longitude, userAgent) {
+    // Create a flow data element and process the latitude, longitude
+    // and User-Agent.
+    const flowData = pipeline.createFlowData();
 
-  await flowData.process();
+    // Add the longitude and latitude as evidence
+    flowData.evidence.add('location.latitude', latitude);
+    flowData.evidence.add('location.longitude', longitude);
+    flowData.evidence.add('header.user-agent', userAgent);
 
-  const country = flowData.location.country;
-  const isMobile = flowData.location.ismobile;
+    await flowData.process();
 
-  if (country.hasValue) {
-    console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
-  } else {
-    // Echo out why the value isn't meaningful
-    console.log(country.noValueMessage);
-  }
+    const country = flowData.location.country;
+    const isMobile = flowData.location.ismobile;
 
-  if (isMobile.hasValue) {
-    console.log(`Does the User-Agent '${userAgent}' represent a mobile device? ${isMobile.value}`);
-  } else {
-    // Echo out why the value isn't meaningful
-    console.log(isMobile.noValueMessage);
-  }
-};
+    if (country.hasValue) {
+      console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
+    } else {
+      // Echo out why the value isn't meaningful
+      console.log(country.noValueMessage);
+    }
 
-const mobileUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C114';
+    if (isMobile.hasValue) {
+      console.log(`Does the User-Agent '${userAgent}' represent a mobile device? ${isMobile.value}`);
+    } else {
+      // Echo out why the value isn't meaningful
+      console.log(isMobile.noValueMessage);
+    }
+  };
 
-getProperties('51.458048', '-0.9822207999999999', mobileUserAgent);
+  const mobileUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C114';
+
+  getProperties('51.458048', '-0.9822207999999999', mobileUserAgent);
+}

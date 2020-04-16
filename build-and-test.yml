@@ -60,11 +60,6 @@ steps:
         },
       "jest-junit": {
           "outputName": "'"$NODE_VERSION"'.xml"    
-        },
-      "jest": {
-          "globals": {
-            "resourceKey": "AQS5HKcyQX4Dop_U10g"
-          }
         }
       }'
     echo $content
