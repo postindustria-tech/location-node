@@ -21,6 +21,6 @@
  * ********************************************************************* */
 
 module.exports = {
-  geoLocationCloud: require('./geoLocationCloud'),
-  geoLocationPipelineBuilder: require('./geoLocationPipelineBuilder')
+  GeoLocationCloud: require('./geoLocationCloud'),
+  GeoLocationPipelineBuilder: require('./geoLocationPipelineBuilder')
 };
