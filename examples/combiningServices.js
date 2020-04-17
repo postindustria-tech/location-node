@@ -3,7 +3,7 @@
  * Copyright 2019 51 Degrees Mobile Experts Limited, 5 Charlotte Close,
  * Caversham, Reading, Berkshire, United Kingdom RG4 7BY.
  *
- * This Original Work is licensed under the European Union Public Licence (EUPL) 
+ * This Original Work is licensed under the European Union Public Licence (EUPL)
  * v.1.2 and is subject to its terms as set out below.
  *
  * If a copy of the EUPL was not distributed with this file, You can obtain
@@ -13,10 +13,10 @@
  * amended by the European Commission) shall be deemed incompatible for
  * the purposes of the Work and the provisions of the compatibility
  * clause in Article 5 of the EUPL shall not apply.
- * 
- * If using the Work as, or as part of, a network application, by 
+ *
+ * If using the Work as, or as part of, a network application, by
  * including the attribution notice(s) required under Article 5 of the EUPL
- * in the end user terms of the application under an appropriate heading, 
+ * in the end user terms of the application under an appropriate heading,
  * such notice(s) shall fulfill the requirements of that article.
  * ********************************************************************* */
 
@@ -25,11 +25,11 @@
 
 Example of using the 51Degrees geo-location Cloud alongside 51Degrees device detection to determine the country and device for a given longitude, latitude and User-Agent.
 
-This example is available in full on [GitHub](https://github.com/51Degrees/location-node/blob/master/examples/cloud/combiningServices.js). 
+This example is available in full on [GitHub](https://github.com/51Degrees/location-node/blob/master/examples/cloud/combiningServices.js).
 
-To run this example, you will need to create a **resource key**. 
-The resource key is used as short-hand to store the particular set of 
-properties you are interested in as well as any associated license keys 
+To run this example, you will need to create a **resource key**.
+The resource key is used as short-hand to store the particular set of
+properties you are interested in as well as any associated license keys
 that entitle you to increased request limits and/or paid-for properties.
 
 You will also need to install the fiftyone.devicedetection package with
@@ -51,7 +51,7 @@ Build the geo-location pipeline using the builder that comes with the fiftyone.g
 ```
 
 let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    "resourceKey": "AQS5HKcyHJbECm6E10g"
+    'resourceKey': localResourceKey
 })
 .add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
 .build();
@@ -62,7 +62,7 @@ Each pipeline has an event emitter attached you can listen to to catch messages.
 
 ```
 
-pipeline.on("error", console.error);
+pipeline.on('error', console.error);
 
 ```
 
@@ -79,9 +79,9 @@ let getProperties = async function (latitude, longitude, userAgent) {
     let flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add("location.latitude", latitude);
-    flowData.evidence.add("location.longitude", longitude);
-    flowData.evidence.add("header.user-agent", userAgent);
+    flowData.evidence.add('location.latitude', latitude);
+    flowData.evidence.add('location.longitude', longitude);
+    flowData.evidence.add('header.user-agent', userAgent);
 
     await flowData.process();
 
@@ -116,57 +116,69 @@ let getProperties = async function (latitude, longitude, userAgent) {
 
 */
 
-const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + "/../");
+const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + '/../');
 const FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
 
-let pipeline = new FiftyOneDegreesDeviceDetection.deviceDetectionPipelineBuilder({
-    "resourceKey": "AQS5HKcyHJbECm6E10g"
-})
-.add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
-.build();
+// You need to create a resource key at https://configure.51degrees.com and
+// paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
+// Make sure to include the isMobile and country properties as they
+// are used by this example.
+let localResourceKey = '!!YOUR_RESOURCE_KEY!!';
+// Check if there is a resource key in the global variable and use
+// it if there is one. (This is used by automated tests to pass in a key)
+try {
+  localResourceKey = resourceKey;
+} catch (e) {
+  if (e instanceof ReferenceError) {}
+}
 
-// Logging of errors and other messages. Valid logs types are info, debug, warn, error
-pipeline.on("error", console.error);
+if (localResourceKey.substr(0, 2) === '!!') {
+  console.log('You need to create a resource key at ' +
+    'https://configure.51degrees.com and paste it into the code, ' +
+    'replacing !!YOUR_RESOURCE_KEY!!.');
+  console.log('Make sure to include the ismobile property ' +
+    'as it is used by this example.');
+} else {
+  const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({
+    resourceKey: localResourceKey
+  })
+    .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud())
+    .build();
 
-let getProperties = async function (latitude, longitude, userAgent) {
+  // Logging of errors and other messages. Valid logs types are info, debug, warn, error
+  pipeline.on('error', console.error);
 
+  const getProperties = async function (latitude, longitude, userAgent) {
     // Create a flow data element and process the latitude, longitude
     // and User-Agent.
-    let flowData = pipeline.createFlowData();
+    const flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add("location.latitude", latitude);
-    flowData.evidence.add("location.longitude", longitude);
-    flowData.evidence.add("header.user-agent", userAgent);
+    flowData.evidence.add('location.latitude', latitude);
+    flowData.evidence.add('location.longitude', longitude);
+    flowData.evidence.add('header.user-agent', userAgent);
 
     await flowData.process();
 
-    let country = flowData.location.country;
-    let isMobile = flowData.location.ismobile;
+    const country = flowData.location.country;
+    const isMobile = flowData.location.ismobile;
 
     if (country.hasValue) {
-
-        console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
-
+      console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
     } else {
-
-        // Echo out why the value isn't meaningful
-        console.log(country.noValueMessage);
-
+      // Echo out why the value isn't meaningful
+      console.log(country.noValueMessage);
     }
 
     if (isMobile.hasValue) {
-
-        console.log(`Does the User-Agent '${userAgent}' represent a mobile device? ${isMobile.value}`);
-
+      console.log(`Does the User-Agent '${userAgent}' represent a mobile device? ${isMobile.value}`);
     } else {
-
-        // Echo out why the value isn't meaningful
-        console.log(isMobile.noValueMessage);
-
+      // Echo out why the value isn't meaningful
+      console.log(isMobile.noValueMessage);
     }
+  };
+
+  const mobileUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C114';
+
+  getProperties('51.458048', '-0.9822207999999999', mobileUserAgent);
 }
-
-let mobileUserAgent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_2 like Mac OS X) AppleWebKit/604.4.7 (KHTML, like Gecko) Mobile/15C114';
-
-getProperties("51.458048", "-0.9822207999999999", mobileUserAgent);
