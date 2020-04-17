@@ -12,7 +12,8 @@
         "SharedArrayBuffer": "readonly",
         "test": true,
         "jest": true,
-        "expect": true
+        "expect": true,
+        "resourceKey": true
     },
     "parserOptions": {
         "ecmaVersion": 2018
