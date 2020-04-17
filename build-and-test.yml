@@ -1,26 +1,136 @@
 trigger: none
 
+pr:
+  - master
+  - develop
+  - release/*  
+
 pool:
   vmImage: 'ubuntu-latest'
   
 strategy:
   matrix:
+    node_6_x:
+      node_version: 6.x
     node_8_x:
       node_version: 8.x
     node_10_x:
       node_version: 10.x
+    node_12_x:
+      node_version: 12.x
       
 steps:
+- checkout: self
+  lfs: true
+  submodules: recursive
+
 - task: NodeTool@0
   inputs:
     versionSpec: $(node_version)
   displayName: 'Install Node.js'
 
 - script: |
-    npm install jest
-    npm install jest-junit
+    rm package.json
+    content='{ 
+      "name": "geolocation-node-tests", 
+      "version": "1.0.0", 
+      "description": "Temporary package to allow us to output an test report with the node version number in the name", 
+      "main": "index.js", 
+      "scripts": { 
+        "test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura" 
+        }, 
+      "repository": { 
+        "type": "git", "url": "https://github.com/51Degrees/location-node" 
+        }, 
+      "author": "51Degrees",
+      "dependencies": { 
+        "jest": "^24.9.0",
+        "jest-junit": "^9.0.0",
+        "fiftyone.pipeline.core": "^4.1.0",
+        "fiftyone.pipeline.engines": "^4.1.0",
+        "fiftyone.pipeline.engines.fiftyone": "^4.1.0",
+        "fiftyone.pipeline.cloudrequestengine": "^4.1.0",
+        "mustache": "^4.0.1",
+        "uglify-js": "^3.8.1",
+        "eslint": "^6.8.0",
+        "eslint-config-standard": "^14.1.1",
+        "eslint-plugin-import": "^2.20.2",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-promise": "^4.2.1",
+        "eslint-plugin-standard": "^4.0.1"
+        },
+      "jest-junit": {
+          "outputName": "'"$NODE_VERSION"'.xml"    
+        },      
+      "jest": {
+          "globals": {
+            "resourceKey": "!!YOUR_RESOURCE_KEY!!"
+          }
+        }
+      }'
+    echo $content
+    echo $content > package.json
+  displayName: 'Create package.json for tests'
+
+# The secure file to download will be stored in the 
+# Pipelines/Library/SecureFiles section in Azure DevOps.
+- task: DownloadSecureFile@1
+  displayName: 'Download .npmrc'
+  name: npmrc
+  inputs:
+    secureFile: '.npmrc'
+
+- task: CopyFiles@2
+  displayName: 'Copy .npmrc to working directory'
+  inputs:
+    sourceFolder: '$(Agent.TempDirectory)'
+    targetFolder: '$(System.DefaultWorkingDirectory)'
+    contents: '.npmrc'
+
+- script: |
+    npm install
     npm test
   displayName: 'Build and Test'
+
+- script: |
+    eslint='{
+        "env": {
+            "browser": true,
+            "commonjs": true,
+            "es6": true
+        },
+        "extends": [
+            "standard"
+        ],
+        "globals": {
+            "Atomics": "readonly",
+            "SharedArrayBuffer": "readonly",
+            "test": true,
+            "jest": true,
+            "expect": true,
+            "resourceKey": true
+        },
+        "parserOptions": {
+            "ecmaVersion": 2018
+        },
+        "rules": {
+          "node/no-deprecated-api": "off",
+          "no-throw-literal": "off",
+          "no-path-concat": "off",
+          "no-prototype-builtins": "off",
+          "no-eval": "off",
+          "semi": [
+              2,
+              "always"
+          ]
+        }
+      }'
+    echo $eslint
+    echo $eslint > .eslintrc
+    npm install -g eslint
+    eslint **/*.js
+  displayName: "Set up and run eslint"
+  condition: ne(variables['node_version'], '6.x')
 
 - task: PublishTestResults@2
   condition: succeededOrFailed()
