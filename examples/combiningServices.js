@@ -142,7 +142,9 @@ if (localResourceKey.substr(0, 2) === '!!') {
   const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({
     resourceKey: localResourceKey
   })
-    .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud())
+    .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud({
+      locationProvider: 'fiftyonedegrees'
+    }))
     .build();
 
   // Logging of errors and other messages. Valid logs types are info, debug, warn, error
@@ -154,8 +156,8 @@ if (localResourceKey.substr(0, 2) === '!!') {
     const flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add('location.latitude', latitude);
-    flowData.evidence.add('location.longitude', longitude);
+    flowData.evidence.add('query.51D_Pos_latitude', latitude);
+    flowData.evidence.add('query.51D_Pos_longitude', longitude);
     flowData.evidence.add('header.user-agent', userAgent);
 
     await flowData.process();
