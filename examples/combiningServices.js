@@ -163,7 +163,7 @@ if (localResourceKey.substr(0, 2) === '!!') {
     await flowData.process();
 
     const country = flowData.location.country;
-    const isMobile = flowData.location.ismobile;
+    const isMobile = flowData.device.ismobile;
 
     if (country.hasValue) {
       console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
