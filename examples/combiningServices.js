@@ -117,7 +117,14 @@ let getProperties = async function (latitude, longitude, userAgent) {
 */
 
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + '/../');
-const FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
+let FiftyOneDegreesDeviceDetection = null;
+try {
+  FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
+} catch (e) {
+  console.log('DeviceDetection is not included in package.json to avoid an ' +
+    'unneccessary package dependency. If you wish to run this example ' +
+    'then execute "npm install fiftyone.devicedetection" and try again.');
+}
 
 // You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
@@ -138,7 +145,7 @@ if (localResourceKey.substr(0, 2) === '!!') {
     'replacing !!YOUR_RESOURCE_KEY!!.');
   console.log('Make sure to include the ismobile property ' +
     'as it is used by this example.');
-} else {
+} else if (FiftyOneDegreesDeviceDetection) {
   const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({
     resourceKey: localResourceKey
   })
