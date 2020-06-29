@@ -113,8 +113,6 @@ if (localResourceKey.substr(0, 2) === '!!') {
   console.log('You need to create a resource key at ' +
     'https://configure.51degrees.com and paste it into the code, ' +
     'replacing !!YOUR_RESOURCE_KEY!!.');
-  console.log('Make sure to include the ismobile property ' +
-    'as it is used by this example.');
 } else {
   const pipeline = new FiftyOneDegreesGeoLocation.GeoLocationPipelineBuilder({
     resourceKey: localResourceKey
@@ -136,7 +134,7 @@ if (localResourceKey.substr(0, 2) === '!!') {
     const country = flowData.location.country;
 
     if (country.hasValue) {
-      console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
+      console.log(`Which country is the location [${latitude},${longitude}] in? ${country.value}`);
     } else {
       // Echo out why the value isn't meaningful
       console.log(country.noValueMessage);
