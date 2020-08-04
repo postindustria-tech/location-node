@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura" 
+    "test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura"
   },
   "contributors": [
     "Filip Hnízdo <filip@octophin.com> (https://octophindigital.com/)",
@@ -16,15 +16,15 @@
     "Joseph Dix <joseph@51degrees.com> (https://51degrees.com)"
   ],
   "dependencies": {
-    "fiftyone.pipeline.cloudrequestengine": "^4.1.1",
-    "fiftyone.pipeline.core": "^4.1.1",
-    "fiftyone.pipeline.engines": "^4.1.1",
-    "fiftyone.pipeline.engines.fiftyone": "^4.1.1"
+    "fiftyone.pipeline.cloudrequestengine": "^4.1.2",
+    "fiftyone.pipeline.core": "^4.1.2",
+    "fiftyone.pipeline.engines": "^4.1.2",
+    "fiftyone.pipeline.engines.fiftyone": "^4.1.2"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
@@ -36,8 +36,8 @@
     "url": "https://github.com/51Degrees/location-node/issues"
   },
   "jest-junit": {
-    "outputName": "test_results.xml"    
-  },      
+    "outputName": "test_results.xml"
+  },
   "jest": {
     "globals": {
       "resourceKey": "!!YOUR_RESOURCE_KEY!!"
