@@ -7,6 +7,9 @@ pr:
 
 pool:
   vmImage: 'ubuntu-latest'
+
+variables:
+  - group: InternalKeys
   
 strategy:
   matrix:
@@ -44,7 +47,13 @@ steps:
     targetFolder: '$(System.DefaultWorkingDirectory)'
     contents: '.npmrc'
 
+# 1. Set resource key environment variable from location resource key value 
+# in 'InternalKeys' group
+# 2. Install dependencies.
+# 3. Run tests.
 - script: |
+    echo "Resource key for testing = $(LocationResourceKey)"
+    export RESOURCE_KEY="$(LocationResourceKey)"
     npm install
     npm test
   displayName: 'Build and Test'
