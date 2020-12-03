@@ -20,38 +20,31 @@
  * such notice(s) shall fulfill the requirements of that article.
  * ********************************************************************* */
 
-const GeoLocation = require(__dirname + 
+const GeoLocation = require(__dirname +
     '/..');
-  const myResourceKey = process.env.RESOURCE_KEY || "!!YOUR_RESOURCE_KEY!!";
+const myResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 
-  describe('geoLocationCloud', () => {
-    // Check that if no evidence is yet available for location
-    // engine, accessing a valid property will return HasValue=false 
-    // and a correct error message.
-    test('No evidence error message', done => {
-      if (myResourceKey == "!!YOUR_RESOURCE_KEY!!") {
-        try {
-          myResourceKey = resourceKey;
-        } catch (e) {
-          throw new Error('No resource key is present!');
-        }
-      }
+// Check that if no evidence is yet available for location
+// engine, accessing a valid property will return HasValue=false
+// and a correct error message.
+test('No evidence error message', done => {
+  if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
+    throw new Error('No resource key is present!');
+  }
 
-      const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
-        resourceKey: myResourceKey
-      }).build();
-      const flowData = pipeline.createFlowData();
-  
-      flowData.process().then(function() {
-        const country = flowData.location.country;
-        expect(country.hasValue).toBe(false);
-        expect(country.noValueMessage.indexOf('This property requires ' +
-          'evidence values from JavaScript running on the client. It ' +
-          'cannot be populated until a future request is made that ' +
-          'contains this additional data.') !== -1).toBe(true);
-  
-        done();
-      });
-    });
+  const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
+    resourceKey: myResourceKey
+  }).build();
+  const flowData = pipeline.createFlowData();
+
+  flowData.process().then(function () {
+    const country = flowData.location.country;
+    expect(country.hasValue).toBe(false);
+    expect(country.noValueMessage.indexOf('This property requires ' +
+      'evidence values from JavaScript running on the client. It ' +
+      'cannot be populated until a future request is made that ' +
+      'contains this additional data.') !== -1).toBe(true);
+
+    done();
   });
-  
+});
