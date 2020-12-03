@@ -24,27 +24,41 @@ const GeoLocation = require(__dirname +
     '/..');
 const myResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 
-// Check that if no evidence is yet available for location
-// engine, accessing a valid property will return HasValue=false
-// and a correct error message.
-test('No evidence error message', done => {
-  if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
-    throw new Error('No resource key is present!');
-  }
+// Skip the rest of the examples when async is not available
+let isAsync = true;
 
-  const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
-    resourceKey: myResourceKey
-  }).build();
-  const flowData = pipeline.createFlowData();
+try {
+  eval('async () => {}');
+} catch (e) {
+  isAsync = false;
+}
 
-  flowData.process().then(function () {
-    const country = flowData.location.country;
-    expect(country.hasValue).toBe(false);
-    expect(country.noValueMessage.indexOf('This property requires ' +
-      'evidence values from JavaScript running on the client. It ' +
-      'cannot be populated until a future request is made that ' +
-      'contains this additional data.') !== -1).toBe(true);
+if (isAsync) {
+  // Check that if no evidence is yet available for location
+  // engine, accessing a valid property will return HasValue=false
+  // and a correct error message.
+  test('No evidence error message', done => {
+    if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
+      throw new Error('No resource key is present!');
+    }
 
-    done();
+    const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
+      resourceKey: myResourceKey
+    }).build();
+    const flowData = pipeline.createFlowData();
+
+    flowData.process().then(function () {
+      const country = flowData.location.country;
+      expect(country.hasValue).toBe(false);
+      expect(country.noValueMessage.indexOf('This property requires ' +
+        'evidence values from JavaScript running on the client. It ' +
+        'cannot be populated until a future request is made that ' +
+        'contains this additional data.') !== -1).toBe(true);
+
+      done();
+    });
   });
-});
+} else {
+  // Skip if async is not available (e.g node 6)
+  test.skip('Workaround', () => 1);
+}
