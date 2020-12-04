@@ -20,23 +20,11 @@
  * such notice(s) shall fulfill the requirements of that article.
  * ********************************************************************* */
 
-const require51 = (requestedPackage) => {
-  try {
-    return require(__dirname + '/../' + requestedPackage);
-  } catch (e) {
-    return require(requestedPackage);
-  }
-};
+const CloudEngine = require('fiftyone.pipeline.cloudrequestengine').CloudEngine;
 
-const engines = require51('fiftyone.pipeline.engines');
-const Engine = engines.Engine;
-const AspectDataDictionary = engines.AspectDataDictionary;
-
-class GeoLocationCloud extends Engine {
-  // engineKey = fiftyonedegrees or digitalelement
+class GeoLocationCloud extends CloudEngine {
   constructor ({ locationProvider }) {
     super(...arguments);
-
     if (locationProvider === 'fiftyonedegrees') {
       this.dataKey = 'location';
     } else if (locationProvider === 'digitalelement') {
@@ -44,58 +32,6 @@ class GeoLocationCloud extends Engine {
     } else {
       throw "The location provider '" + locationProvider + "' was not recognized.";
     }
-  }
-
-  processInternal (flowData) {
-    const engine = this;
-
-    this.checkProperties(flowData).then(function (params) {
-      let cloudData = flowData.get('cloud').get('cloud');
-
-      cloudData = JSON.parse(cloudData);
-
-      // Loop over cloudData.location or cloudData.location_digitalelement properties to check if they have a value
-
-      const result = {};
-
-      Object.entries(cloudData[engine.dataKey]).forEach(function ([key, value]) {
-        result[key] = new engines.AspectPropertyValue();
-
-        if (cloudData[engine.dataKey][key + 'nullreason']) {
-          result[key].noValueMessage = cloudData[engine.dataKey][key + 'nullreason'];
-        } else {
-          result[key].value = value;
-        }
-      });
-
-      const data = new AspectDataDictionary(
-        {
-          flowElement: engine,
-          contents: result
-        });
-
-      flowData.setElementData(data);
-    });
-  }
-
-  checkProperties (flowData) {
-    const engine = this;
-
-    return new Promise(function (resolve, reject) {
-      // Check if properties set, if not set them
-
-      if (!Object.keys(engine.properties).length) {
-        const cloudProperties = flowData.get('cloud').get('properties');
-
-        const locationProperties = cloudProperties.location;
-
-        engine.properties = locationProperties;
-
-        engine.updateProperties().then(resolve);
-      } else {
-        resolve();
-      }
-    });
   }
 }
 

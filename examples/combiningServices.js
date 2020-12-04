@@ -37,87 +37,17 @@ You will also need to install the fiftyone.devicedetection package with
 
 You can create a resource key using the 51Degrees [Configurator](https://configure.51degrees.com).
 
-Firstly require the fiftyone.geolocation and fiftyone.devicedetection modules which contain all of the pipeline specific classes we will be using in this example.
-
-```
-
-const FiftyOneDegreesGeoLocation = require('fiftyone.geolocation');
-cont FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
-
-```
-
-Build the geo-location pipeline using the builder that comes with the fiftyone.geolocation module and pass in the desired settings, adding the device detection cloud engine.
-
-```
-
-let pipeline = new FiftyOneDegreesGeoLocation.geoLocationPipelineBuilder({
-    'resourceKey': localResourceKey
-})
-.add(new FiftyOneDegreesDeviceDetection.deviceDetectionCloud())
-.build();
-
-```
-
-Each pipeline has an event emitter attached you can listen to to catch messages. Valid log types are info, debug, warn and error.
-
-```
-
-pipeline.on('error', console.error);
-
-```
-
-A pipeline can create a flowData element which is where evidence is added (for example from a device web request). This evidence is then processed by the pipeline through the flowData's `process()` method (which returns a promise to work with both syncronous and asyncronous pipelines).
-
-Here is an example of a function that gets the country and device from a longitude, latidude and User-Agent. In some cases the country value is not meaningful so instead of returning a default, a .hasValue() check can be made. Please see the failureToMatch example for more information.
-
-```
-
-let getProperties = async function (latitude, longitude, userAgent) {
-
-    // Create a flow data element and process the latitude, longitude
-    // and User-Agent.
-    let flowData = pipeline.createFlowData();
-
-    // Add the longitude and latitude as evidence
-    flowData.evidence.add('location.latitude', latitude);
-    flowData.evidence.add('location.longitude', longitude);
-    flowData.evidence.add('header.user-agent', userAgent);
-
-    await flowData.process();
-
-    let country = flowData.location.country;
-    let isMobile = flowData.location.ismobile;
-
-    if (country.hasValue) {
-
-        console.log(`Country: ${country.value}`);
-
-    } else {
-
-        // Echo out why the value isn't meaningful
-        console.log(country.noValueMessage);
-
-    }
-
-    if (isMobile.hasValue) {
-
-        console.log(`IsMobile: ${isMobile.value}`);
-
-    } else {
-
-        // Echo out why the value isn't meaningful
-        console.log(isMobile.noValueMessage);
-
-    }
-
-}
-
-```
-
 */
 
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + '/../');
-const FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
+let FiftyOneDegreesDeviceDetection = null;
+try {
+  FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
+} catch (e) {
+  console.log('DeviceDetection is not included in package.json to avoid an ' +
+    'unneccessary package dependency. If you wish to run this example ' +
+    'then execute "npm install fiftyone.devicedetection" and try again.');
+}
 
 // You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
@@ -138,11 +68,13 @@ if (localResourceKey.substr(0, 2) === '!!') {
     'replacing !!YOUR_RESOURCE_KEY!!.');
   console.log('Make sure to include the ismobile property ' +
     'as it is used by this example.');
-} else {
+} else if (FiftyOneDegreesDeviceDetection) {
   const pipeline = new FiftyOneDegreesDeviceDetection.DeviceDetectionPipelineBuilder({
     resourceKey: localResourceKey
   })
-    .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud())
+    .add(new FiftyOneDegreesGeoLocation.GeoLocationCloud({
+      locationProvider: 'fiftyonedegrees'
+    }))
     .build();
 
   // Logging of errors and other messages. Valid logs types are info, debug, warn, error
@@ -154,17 +86,17 @@ if (localResourceKey.substr(0, 2) === '!!') {
     const flowData = pipeline.createFlowData();
 
     // Add the longitude and latitude as evidence
-    flowData.evidence.add('location.latitude', latitude);
-    flowData.evidence.add('location.longitude', longitude);
+    flowData.evidence.add('query.51D_Pos_latitude', latitude);
+    flowData.evidence.add('query.51D_Pos_longitude', longitude);
     flowData.evidence.add('header.user-agent', userAgent);
 
     await flowData.process();
 
     const country = flowData.location.country;
-    const isMobile = flowData.location.ismobile;
+    const isMobile = flowData.device.ismobile;
 
     if (country.hasValue) {
-      console.log(`Which country is the location [${latitude},${longitude}] is in? ${country.value}`);
+      console.log(`Which country is the location [${latitude},${longitude}] in? ${country.value}`);
     } else {
       // Echo out why the value isn't meaningful
       console.log(country.noValueMessage);
