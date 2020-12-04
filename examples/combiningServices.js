@@ -53,7 +53,7 @@ try {
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
 // Make sure to include the isMobile and country properties as they
 // are used by this example.
-let localResourceKey = '!!YOUR_RESOURCE_KEY!!';
+let localResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 // Check if there is a resource key in the global variable and use
 // it if there is one. (This is used by automated tests to pass in a key)
 try {
