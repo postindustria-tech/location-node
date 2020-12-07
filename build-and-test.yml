@@ -55,6 +55,7 @@ steps:
     echo "Resource key for testing = $(LocationResourceKey)"
     export RESOURCE_KEY="$(LocationResourceKey)"
     npm install
+    npm install fiftyone.devicedetection
     npm test
   displayName: 'Build and Test'
 

@@ -66,6 +66,16 @@ if (isAsync) {
 
     testExample({ file: (__dirname) + '/gettingStarted.js' });
   });
+  test('combining services', (done) => {
+    setTimeout(done, 1000);
+
+    testExample({ file: (__dirname) + '/combiningServices.js' });
+  });
+  test('configure from file', (done) => {
+    setTimeout(done, 1000);
+
+    testExample({ file: (__dirname) + '/configureFromFile.js' });
+  });
 } else {
   // Skip if async is not available (e.g node 6)
   test.skip('Workaround', () => 1);
