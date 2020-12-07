@@ -62,6 +62,7 @@ let configFile = fs.readFileSync((process.env.directory || __dirname)
 
 let config = JSON.parse(configFile);
 let resourceKeySet = true;
+let resourceKeySetFromFile = true;
 
 // Check if a resource key has been set in the config file.
 if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
@@ -81,14 +82,21 @@ if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
         'https://configure.51degrees.com and paste it into the 51d.json ' +
         'config file, replacing !!YOUR_RESOURCE_KEY!!.');
   }
+
+  resourceKeySetFromFile = false;
 }
 
-if(resourceKeySet)
-{
-  // Create a new pipeline from the supplied config file.
-  const pipeline = new PipelineBuilder()
-    .buildFromConfigurationFile((process.env.directory || __dirname) +
-      '/51d.json');
+if (resourceKeySet) {
+  let pipeline = null;
+  if(resourceKeySetFromFile) {
+    // Create a new pipeline from the supplied config file.
+    pipeline = new PipelineBuilder()
+      .buildFromConfigurationFile((process.env.directory || __dirname) +
+        '/51d.json');
+  } else {
+    // Create a new pipeline from the config object.
+    pipeline = new PipelineBuilder().buildFromConfiguration(config);
+  }
 
   // Logging of errors and other messages. Valid logs types are info, debug,
   // warn, error
