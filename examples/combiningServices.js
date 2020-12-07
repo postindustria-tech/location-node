@@ -61,7 +61,8 @@ try {
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
 // Make sure to include the isMobile and country properties as they
 // are used by this example.
-if (typeof localResourceKey === 'undefined') {
+if (typeof localResourceKey === 'undefined' ||
+  localResourceKey.substr(0, 2) === '!!') {
   localResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 }
 

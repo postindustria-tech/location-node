@@ -108,7 +108,8 @@ try {
 }
 // You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
-if (typeof localResourceKey === 'undefined') {
+if (typeof localResourceKey === 'undefined' ||
+  localResourceKey.substr(0, 2) === '!!') {
   localResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 }
 
