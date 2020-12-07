@@ -67,8 +67,19 @@ let resourceKeySetFromFile = true;
 // Check if a resource key has been set in the config file.
 if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
       .startsWith("!!")) {
+  let myResourceKey = undefined;
+  // Check if there is a resource key in the global variable and use it if
+  // there is one.
+  try {
+    localResourceKey = resourceKey;
+  } catch (e) {
+    if (e instanceof ReferenceError) {}
+  }
+
   // If not, check the resource key environment variable.
-  const myResourceKey = process.env.RESOURCE_KEY;
+  if (typeof myResourceKye === 'undefined') {
+    myResourceKey = process.env.RESOURCE_KEY;
+  }
 
   if (myResourceKey) {
     // If there is a resource key in the environment variable then use it.

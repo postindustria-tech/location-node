@@ -98,9 +98,19 @@ let getCountry = async function (latitude, longitude) {
 
 const FiftyOneDegreesGeoLocation = require((process.env.directory || __dirname) + '/../');
 
+let localResourceKey = undefined;
+// Check if there is a resource key in the global variable and use it if
+// there is one.
+try {
+  localResourceKey = resourceKey;
+} catch (e) {
+  if (e instanceof ReferenceError) {}
+}
 // You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
-const localResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
+if (typeof localResourceKey === 'undefined') {
+  localResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
+}
 
 if (localResourceKey.substr(0, 2) === '!!') {
   console.log('You need to create a resource key at ' +
