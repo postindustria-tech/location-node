@@ -49,7 +49,7 @@ try {
     'then execute "npm install fiftyone.devicedetection" and try again.');
 }
 
-let localResourceKey = undefined;
+let localResourceKey;
 // Check if there is a resource key in the global variable and use it if
 // there is one.
 try {

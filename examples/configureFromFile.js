@@ -34,7 +34,7 @@ The resource key is used as short-hand to store the particular set of
 properties you are interested in as well as any associated license keys
 that entitle you to increased request limits and/or paid-for properties.
 
-You can create a resource key using the 51Degrees 
+You can create a resource key using the 51Degrees
 [Configurator](https://configure.51degrees.com).
 
 Make sure to include the 'Country' property, as it is required to run this
@@ -57,35 +57,35 @@ const PipelineBuilder = require('fiftyone.pipeline.core').PipelineBuilder;
 
 const fs = require('fs');
 
-let configFile = fs.readFileSync((process.env.directory || __dirname) 
-  + "/51d.json");
+const configFile = fs.readFileSync((process.env.directory || __dirname) +
+  '/51d.json');
 
-let config = JSON.parse(configFile);
+const config = JSON.parse(configFile);
 let resourceKeySet = true;
 let resourceKeySetFromFile = true;
 
 // Check if a resource key has been set in the config file.
 if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
-      .startsWith("!!")) {
-  let myResourceKey = undefined;
+  .startsWith('!!')) {
+  let myResourceKey;
   // Check if there is a resource key in the global variable and use it if
   // there is one.
   try {
-    localResourceKey = resourceKey;
+    myResourceKey = resourceKey;
   } catch (e) {
     if (e instanceof ReferenceError) {}
   }
 
   // If not, check the resource key environment variable.
-  if (typeof myResourceKye === 'undefined') {
+  if (typeof myResourceKey === 'undefined') {
     myResourceKey = process.env.RESOURCE_KEY;
   }
 
   if (myResourceKey) {
     // If there is a resource key in the environment variable then use it.
-    config.PipelineOptions.Elements[0].elementParameters.resourceKey = 
+    config.PipelineOptions.Elements[0].elementParameters.resourceKey =
       myResourceKey;
-  } else {    
+  } else {
     // If not, display a message to the user and don't execute the
     // rest of the example.
     resourceKeySet = false;
@@ -99,7 +99,7 @@ if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
 
 if (resourceKeySet) {
   let pipeline = null;
-  if(resourceKeySetFromFile) {
+  if (resourceKeySetFromFile) {
     // Create a new pipeline from the supplied config file.
     pipeline = new PipelineBuilder()
       .buildFromConfigurationFile((process.env.directory || __dirname) +
