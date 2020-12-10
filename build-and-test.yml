@@ -29,49 +29,6 @@ steps:
     versionSpec: $(node_version)
   displayName: 'Install Node.js'
 
-- script: |
-    rm package.json
-    content='{ 
-      "name": "geolocation-node-tests", 
-      "version": "1.0.0", 
-      "description": "Temporary package to allow us to output an test report with the node version number in the name", 
-      "main": "index.js", 
-      "scripts": { 
-        "test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura" 
-        }, 
-      "repository": { 
-        "type": "git", "url": "https://github.com/51Degrees/location-node" 
-        }, 
-      "author": "51Degrees",
-      "dependencies": { 
-        "jest": "^24.9.0",
-        "jest-junit": "^9.0.0",
-        "fiftyone.pipeline.core": "^4.1.0",
-        "fiftyone.pipeline.engines": "^4.1.0",
-        "fiftyone.pipeline.engines.fiftyone": "^4.1.0",
-        "fiftyone.pipeline.cloudrequestengine": "^4.1.0",
-        "mustache": "^4.0.1",
-        "uglify-js": "^3.8.1",
-        "eslint": "^6.8.0",
-        "eslint-config-standard": "^14.1.1",
-        "eslint-plugin-import": "^2.20.2",
-        "eslint-plugin-node": "^11.1.0",
-        "eslint-plugin-promise": "^4.2.1",
-        "eslint-plugin-standard": "^4.0.1"
-        },
-      "jest-junit": {
-          "outputName": "'"$NODE_VERSION"'.xml"    
-        },      
-      "jest": {
-          "globals": {
-            "resourceKey": "!!YOUR_RESOURCE_KEY!!"
-          }
-        }
-      }'
-    echo $content
-    echo $content > package.json
-  displayName: 'Create package.json for tests'
-
 # The secure file to download will be stored in the 
 # Pipelines/Library/SecureFiles section in Azure DevOps.
 - task: DownloadSecureFile@1
@@ -127,7 +84,7 @@ steps:
       }'
     echo $eslint
     echo $eslint > .eslintrc
-    npm install -g eslint
+    npm install -g eslint@6.8.0
     eslint **/*.js
   displayName: "Set up and run eslint"
   condition: ne(variables['node_version'], '6.x')
@@ -136,7 +93,8 @@ steps:
   condition: succeededOrFailed()
   inputs:
     testRunner: JUnit
-    testResultsFiles: '**/$(node_version).xml'
+    testResultsFiles: '**/test_results.xml'
+    testRunTitle: 'Node $(node_version)'
 
 - task: PublishCodeCoverageResults@1
   inputs: 
