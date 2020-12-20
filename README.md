@@ -34,6 +34,8 @@ Examples can be found in the `examples/` folder. See below for a list of example
 |-------|-----------|------------|
 |gettingStarted.js|This example uses geo-location to determine the country from a longitude and latitude.|Cloud|
 |combiningServices.js|This example uses geo-location alongside device detection to determine the country and device.|Cloud|
+|configureFromFile.js|This example shows how to configure pipeline with geo-location from a configuration file.|Cloud|
+|webIntegration.js|This example demonstrates how to get location information from the device that a user is using to access a website.|Cloud|
 
 ## Tests
 
