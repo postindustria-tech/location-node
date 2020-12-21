@@ -37,12 +37,12 @@ that entitle you to increased request limits and/or paid-for properties.
 You can create a resource key using the 51Degrees
 [Configurator](https://configure.51degrees.com).
 
-Make sure to include the 'Country' property, as it is required to run this
+Make sure to include the Country property, as it is required to run this
 example.
 
 The configuration file used here is:
 
-@include cloud/51d.json
+@include 51d.json
 
 Expected output:
 
