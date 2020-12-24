@@ -1,8 +1,8 @@
 # 51Degrees Geo-Location Engines
 
-![51Degrees](https://51degrees.com/DesktopModules/FiftyOne/Distributor/Logo.ashx?utm_source=github&utm_medium=repository&utm_content=readme_main&utm_campaign=node-open-source "Data rewards the curious") **Pipeline API**
+![51Degrees](https://51degrees.com/img/logo.png?utm_source=github&utm_medium=repository&utm_content=readme_main&utm_campaign=node-open-source "Data rewards the curious") **Pipeline API**
 
-[Developer Documentation](https://docs.51degrees.com?utm_source=github&utm_medium=repository&utm_content=documentation&utm_campaign=node-open-source "developer documentation")
+[Developer Documentation](https://51degrees.com/location-node/4.2/index.html?utm_source=github&utm_medium=repository&utm_content=documentation&utm_campaign=node-open-source "developer documentation")
 
 ## Introduction
 
@@ -34,6 +34,8 @@ Examples can be found in the `examples/` folder. See below for a list of example
 |-------|-----------|------------|
 |gettingStarted.js|This example uses geo-location to determine the country from a longitude and latitude.|Cloud|
 |combiningServices.js|This example uses geo-location alongside device detection to determine the country and device.|Cloud|
+|configureFromFile.js|This example shows how to configure pipeline with geo-location from a configuration file.|Cloud|
+|webIntegration.js|This example demonstrates how to get location information from the device that a user is using to access a website.|Cloud|
 
 ## Tests
 
