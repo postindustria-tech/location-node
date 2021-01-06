@@ -20,36 +20,9 @@
  * such notice(s) shall fulfill the requirements of that article.
  * ********************************************************************* */
 
-const fs = require('fs');
-const path = require('path');
-
-const testExample = function ({ file, portNumber }) {
-  if (portNumber) {
-    process.env.PORT = portNumber;
-  }
-
-  // Change the working directory of the example to be the example itself
-
-  process.env.directory = path.dirname(file);
-
-  let code = fs.readFileSync(file, 'utf8');
-
-  // Add in closer of any apps
-
-  const serverClose = `
-    
-    if(typeof server !== "undefined"){
-
-        server.close();
-
-    }
-
-    `;
-
-  code += serverClose;
-
-  jest.fn(eval(code));
-};
+const GeoLocation = require(__dirname +
+    '/..');
+const myResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 
 // Skip the rest of the examples when async is not available
 let isAsync = true;
@@ -61,20 +34,29 @@ try {
 }
 
 if (isAsync) {
-  test('cloud getting started', (done) => {
-    setTimeout(done, 1000);
+  // Check that if no evidence is yet available for location
+  // engine, accessing a valid property will return HasValue=false
+  // and a correct error message.
+  test('No evidence error message', done => {
+    if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
+      throw new Error('No resource key is present!');
+    }
 
-    testExample({ file: (__dirname) + '/gettingStarted.js' });
-  });
-  test('combining services', (done) => {
-    setTimeout(done, 1000);
+    const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
+      resourceKey: myResourceKey
+    }).build();
+    const flowData = pipeline.createFlowData();
 
-    testExample({ file: (__dirname) + '/combiningServices.js' });
-  });
-  test('configure from file', (done) => {
-    setTimeout(done, 1000);
+    flowData.process().then(function () {
+      const country = flowData.location.country;
+      expect(country.hasValue).toBe(false);
+      expect(country.noValueMessage.indexOf('This property requires ' +
+        'evidence values from JavaScript running on the client. It ' +
+        'cannot be populated until a future request is made that ' +
+        'contains this additional data.') !== -1).toBe(true);
 
-    testExample({ file: (__dirname) + '/configureFromFile.js' });
+      done();
+    });
   });
 } else {
   // Skip if async is not available (e.g node 6)

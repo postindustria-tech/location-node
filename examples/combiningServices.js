@@ -45,21 +45,25 @@ try {
   FiftyOneDegreesDeviceDetection = require('fiftyone.devicedetection');
 } catch (e) {
   console.log('DeviceDetection is not included in package.json to avoid an ' +
-    'unneccessary package dependency. If you wish to run this example ' +
+    'unnecessary package dependency. If you wish to run this example ' +
     'then execute "npm install fiftyone.devicedetection" and try again.');
 }
 
-// You need to create a resource key at https://configure.51degrees.com and
-// paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
-// Make sure to include the isMobile and country properties as they
-// are used by this example.
-let localResourceKey = '!!YOUR_RESOURCE_KEY!!';
-// Check if there is a resource key in the global variable and use
-// it if there is one. (This is used by automated tests to pass in a key)
+let localResourceKey;
+// Check if there is a resource key in the global variable and use it if
+// there is one.
 try {
   localResourceKey = resourceKey;
 } catch (e) {
   if (e instanceof ReferenceError) {}
+}
+// You need to create a resource key at https://configure.51degrees.com and
+// paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.
+// Make sure to include the isMobile and country properties as they
+// are used by this example.
+if (typeof localResourceKey === 'undefined' ||
+  localResourceKey.substr(0, 2) === '!!') {
+  localResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 }
 
 if (localResourceKey.substr(0, 2) === '!!') {
