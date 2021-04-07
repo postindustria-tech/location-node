@@ -52,5 +52,5 @@ To run the tests, then call:
 
 For complete documentation on the Pipeline API and associated engines, see the [51Degrees documentation site][Documentation].
 
-[Documentation]: https://docs.51degrees.com
+[Documentation]: https://51degrees.com/documentation/index.html
 [npm]: https://www.npmjs.com/package/fiftyone.geolocation
