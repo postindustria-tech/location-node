@@ -6,7 +6,7 @@ pr:
   - release/*  
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'ubuntu-18.04'
 
 variables:
   - group: InternalKeys
@@ -19,6 +19,7 @@ strategy:
       node_version: 12.x
     node_14_x:
       node_version: 14.x
+  maxParallel: 1
 
 steps:
 - checkout: self
@@ -50,8 +51,10 @@ steps:
 # 2. Install dependencies.
 # 3. Run tests.
 - script: |
-    echo "Resource key for testing = $(LocationResourceKey)"
-    export RESOURCE_KEY="$(LocationResourceKey)"
+    echo "Resource key for testing = $(SuperResourceKey)"
+    export RESOURCE_KEY="$(SuperResourceKey)"
+    echo "Cloud endpoint for testing = $(FOD_CLOUD_API_URL)"
+    export FOD_CLOUD_API_URL="$(FOD_CLOUD_API_URL)"
     npm install
     npm install fiftyone.devicedetection
     npm test

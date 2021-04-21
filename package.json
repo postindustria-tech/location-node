@@ -16,10 +16,10 @@
     "Joseph Dix <joseph@51degrees.com> (https://51degrees.com)"
   ],
   "dependencies": {
-    "fiftyone.pipeline.cloudrequestengine": "^4.2.1",
-    "fiftyone.pipeline.core": "^4.2.1",
-    "fiftyone.pipeline.engines": "^4.2.1",
-    "fiftyone.pipeline.engines.fiftyone": "^4.2.1"
+    "fiftyone.pipeline.cloudrequestengine": "^4.2.2",
+    "fiftyone.pipeline.core": "^4.2.2",
+    "fiftyone.pipeline.engines": "^4.2.2",
+    "fiftyone.pipeline.engines.fiftyone": "^4.2.2"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
@@ -29,6 +29,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "jest": "^24.9.0",
+    "jest-expect-message": "^1.0.2",
     "jest-junit": "^9.0.0"
   },
   "license": "EUPL-1.2",
@@ -38,7 +39,8 @@
   "jest-junit": {
     "outputName": "test_results.xml"
   },
-  "jest": {
+  "jest": {    
+    "setupTestFrameworkScriptFile": "jest-expect-message",
     "globals": {
       "resourceKey": "!!YOUR_RESOURCE_KEY!!"
     }
