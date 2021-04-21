@@ -50,8 +50,10 @@ steps:
 # 2. Install dependencies.
 # 3. Run tests.
 - script: |
-    echo "Resource key for testing = $(LocationResourceKey)"
-    export RESOURCE_KEY="$(LocationResourceKey)"
+    echo "Resource key for testing = $(SuperResourceKey)"
+    export RESOURCE_KEY="$(SuperResourceKey)"
+    echo "Cloud endpoint for testing = $(FOD_CLOUD_API_URL)"
+    export FOD_CLOUD_API_URL="$(FOD_CLOUD_API_URL)"
     npm install
     npm install fiftyone.devicedetection
     npm test
