@@ -1,0 +1,13 @@
+trigger: none
+
+# Include the shared variables
+variables:
+- template: shared-variables.yml
+
+stages:
+- template: shared-build-and-test-platforms.yml
+  parameters:
+    windowsImage: $(windowsImage)
+    linuxImage: $(linuxImage)
+    macImage: $(macImage)
+
