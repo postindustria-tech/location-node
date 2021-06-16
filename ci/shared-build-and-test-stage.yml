@@ -1,0 +1,121 @@
+parameters:
+- name: stageName
+- name: imageName
+
+stages:
+- stage: ${{ parameters.stageName }}
+  dependsOn: []
+
+  jobs:
+  - job: Build_and_Test
+    displayName: Build and Test
+
+    pool:
+      vmImage: ${{ parameters.imageName }}
+    
+    variables:
+      - group: InternalKeys
+      
+    strategy:
+      matrix:
+        node_10_x:
+          node_version: 10.x
+        node_12_x:
+          node_version: 12.x
+        node_14_x:
+          node_version: 14.x
+      maxParallel: 1
+    
+    steps:
+    - checkout: self
+      lfs: true
+      submodules: recursive
+    
+    - task: NodeTool@0
+      inputs:
+        versionSpec: $(node_version)
+      displayName: 'Install Node.js'
+    
+    # The secure file to download will be stored in the 
+    # Pipelines/Library/SecureFiles section in Azure DevOps.
+    - task: DownloadSecureFile@1
+      displayName: 'Download .npmrc'
+      name: npmrc
+      inputs:
+        secureFile: '.npmrc'
+    
+    - task: CopyFiles@2
+      displayName: 'Copy .npmrc to working directory'
+      inputs:
+        sourceFolder: '$(Agent.TempDirectory)'
+        targetFolder: '$(System.DefaultWorkingDirectory)'
+        contents: '.npmrc'
+    
+    # 1. Set resource key environment variable from location resource key value 
+    # in 'InternalKeys' group
+    # 2. Install dependencies.
+    # 3. Run tests.
+    - bash: |
+        echo "Resource key for testing = $(SuperResourceKey)"
+        export RESOURCE_KEY="$(SuperResourceKey)"
+        echo "Cloud endpoint for testing = $(FOD_CLOUD_API_URL)"
+        export FOD_CLOUD_API_URL="$(FOD_CLOUD_API_URL)"
+        npm install
+        npm install fiftyone.devicedetection
+        npm test
+      displayName: 'Build and Test'
+    
+    - bash: |
+        eslint='{
+            "env": {
+                "browser": true,
+                "commonjs": true,
+                "es6": true
+            },
+            "extends": [
+                "standard"
+            ],
+            "globals": {
+                "Atomics": "readonly",
+                "SharedArrayBuffer": "readonly",
+                "test": true,
+                "jest": true,
+                "expect": true,
+                "resourceKey": true
+            },
+            "parserOptions": {
+                "ecmaVersion": 2018
+            },
+            "rules": {
+              "node/no-deprecated-api": "off",
+              "no-throw-literal": "off",
+              "no-path-concat": "off",
+              "no-prototype-builtins": "off",
+              "no-eval": "off",
+              "semi": [
+                  2,
+                  "always"
+              ]
+            }
+          }'
+        echo $eslint
+        echo $eslint > .eslintrc
+        npm install -g eslint@6.8.0
+        eslint **/*.js
+      displayName: "Set up and run eslint"
+      condition: ne(variables['node_version'], '6.x')
+      failOnStderr: true
+    
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testRunner: JUnit
+        testResultsFiles: '**/test_results.xml'
+        testRunTitle: 'Node $(node_version) ${{ parameters.stageName }}'
+    
+    - task: PublishCodeCoverageResults@1
+      inputs: 
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+

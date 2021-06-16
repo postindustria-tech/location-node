@@ -1,0 +1,121 @@
+trigger:
+  - master
+  - develop
+  - release/*  
+
+# Don't trigger for a pull request
+pr: none
+
+# Schedule to run overnight
+schedules:
+- cron: "0 20 * * *"
+  displayName: Daily overnight build
+  branches:
+    include:
+    - develop
+
+# Include shared variables
+variables:
+- template: shared-variables.yml
+
+stages:
+- template: shared-build-and-test-platforms.yml
+  parameters:
+    windowsImage: $(windowsImage)
+    linuxImage: $(linuxImage)
+    macImage: $(macImage)
+
+- stage: Publish
+  dependsOn: [Windows,Linux,MacOS]
+
+  jobs:
+  - job: Publish
+    displayName: Publish Packages
+
+    pool:
+      vmImage: $(linuxImage)
+    
+    variables:
+      - group: PackageFeedAccessToken
+        # Access token for the git repository. Used by the git tag task.
+      - name: system_accesstoken
+        value: $(System.AccessToken)
+    
+    steps:
+    # The lines below are needed to allow the pipeline access to the
+    # OAuth access token that controls write access to the git repository. 
+    # (Required for GitTag task)
+    - checkout: self
+      lfs: true
+      submodules: recursive
+      persistCredentials: true
+    
+    - task: gittools.gitversion.gitversion-task.GitVersion@5
+      displayName: 'Determine Version Number'
+      # Give this task a name so we can use the variables it sets later. 
+      name: GitVersion
+      inputs:
+        preferBundledVersion: false
+    
+    # Set version number.
+    - task: Npm@1
+      displayName: 'npm version fiftyone.geolocation'
+      inputs:
+        command: 'custom'
+        workingDir: '$(System.DefaultWorkingDirectory)'
+        verbose: true
+        customCommand: 'version --no-git-tag-version $(GitVersion.SemVer)'
+      continueOnError: true
+      condition: succeededOrFailed()
+    
+    # Create packages
+    - script: |
+        npm pack
+      displayName: 'Create npm package for later release'
+      condition: succeededOrFailed()
+    
+    # Copy artifacts contents.
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)'
+        contents: '**/*.tgz' 
+        targetFolder: $(Build.ArtifactStagingDirectory)/npm/fiftyone.geolocation
+      displayName: 'Copy tgz files'
+      condition: succeededOrFailed()
+    
+    - task: CopyFiles@2
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)'
+        contents: '**/package.json' 
+        targetFolder: $(Build.ArtifactStagingDirectory)/npm/fiftyone.geolocation
+      displayName: 'Copy package.json files'
+      condition: succeededOrFailed()
+    
+    - script: |
+        ls $(Build.ArtifactStagingDirectory)/npm/fiftyone.geolocation/*fiftyone.geolocation*.tgz
+        if [ $? -ne 0 ]; then
+          echo "ERROR: Could not find packed module."
+          exit 1
+        fi
+      displayName: 'List artifact staging contents'
+      condition: succeededOrFailed()
+      failOnStderr: true
+    
+    # Add a tag to the git repository with the version number of
+    # the package that has just been published
+    - task: ATP.ATP-GitTag.GitTag.GitTag@5
+      displayName: 'Tag Repo With Version Number'
+      inputs:
+        tagUser: 'Azure DevOps'
+        tagEmail: 'CIUser@51Degrees.com'
+    # Only create the tag if we also published a package as defined in 
+    # the previous task.
+      condition: succeeded()
+    
+    # Publish artifacts to DevOps
+    - task: PublishBuildArtifacts@1
+      inputs:
+        pathtoPublish: '$(Build.ArtifactStagingDirectory)/npm'
+        artifactName: npm
+      displayName: 'Publish npm artifact'
+      condition: succeededOrFailed()

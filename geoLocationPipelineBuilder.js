@@ -29,9 +29,9 @@ const require51 = (requestedPackage) => {
 };
 
 const GeoLocationCloud = require('./geoLocationCloud');
-const CloudRequestEngine = require51('fiftyone.pipeline.cloudrequestengine').CloudRequestEngine;
-const PipelineBuilder = require51('fiftyone.pipeline.core').PipelineBuilder;
-const ShareUsageElement = require51('fiftyone.pipeline.engines.fiftyone').ShareUsage;
+const CloudRequestEngine = require('fiftyone.pipeline.cloudrequestengine').CloudRequestEngine;
+const PipelineBuilder = require('fiftyone.pipeline.core').PipelineBuilder;
+const ShareUsageElement = require('fiftyone.pipeline.engines.fiftyone').ShareUsage;
 
 class GeoLocationPipelineBuilder extends PipelineBuilder {
   /**
