@@ -22,6 +22,7 @@ variables:
 - template: shared-variables.yml
 - name: targetBranch
   value: 'refs/heads/master'
+- group: CIAutomation
 
 stages:
 - stage: publish_internal
@@ -42,35 +43,8 @@ stages:
           #- bash: 'ls -R "$(PIPELINE.WORKSPACE)"'
           #  displayName: 'List files and directories'
           
-          - template: shared-extract-and-publish-packages.yml
+          - template: node/shared-extract-and-publish-packages.yml@ciTemplates
             parameters:
               publishConnection: 'NPM internal'
               packageName: 'fiftyone.geolocation'
-              
-- stage: publish_npm
-  displayName: Publish to NPM
-  dependsOn: []
-  condition: eq(variables['build.sourceBranch'], variables['targetBranch'])
-  jobs:
-  - deployment: deploy_npm
-    displayName: Deploy to NPM
-    pool:
-      vmImage: $(linuxImage)
-      workspace:
-        clean: all
-    environment: npm
-    strategy:
-      runOnce:
-        deploy:
-          steps: 
-          
-          - template: shared-extract-and-publish-packages.yml
-            parameters:
-              publishConnection: 'NPM publish connection'
-              packageName: 'fiftyone.geolocation'
-
-
-- template: shared-publish-github-stage.yml@ciTemplates
-  parameters:
-    imageName: $(linuxImage)
-    branchName: ${{ variables.targetBranch }}
+              internalFeedId: $(InternalFeedId)

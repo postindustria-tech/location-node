@@ -40,9 +40,16 @@ class GeoLocationPipelineBuilder extends PipelineBuilder {
      * @param {Boolean} options.shareUsage // include share usage element?
      * @param {String} options.resourceKey // resourceKey for cloud
      * @param {String} options.locationProvider // the provider to request data from. Either "fiftyonedegrees" or "digitalelement".
+     * @param {string} options.cloudRequestOrigin The value to set the 
+     * Origin header to when making requests to the cloud service
      *
     */
-  constructor ({ shareUsage = true, resourceKey = null, locationProvider = 'fiftyonedegrees', baseURL = null }) {
+  constructor ({ 
+    shareUsage = true, 
+    resourceKey = null, 
+    locationProvider = 'fiftyonedegrees', 
+    baseURL = null,
+    cloudRequestOrigin = null }) {
     super(...arguments);
 
     // Check if share usage enabled and add it to the pipeline if so
@@ -53,7 +60,10 @@ class GeoLocationPipelineBuilder extends PipelineBuilder {
 
     // First we need the cloudRequestEngine
 
-    const cloudRequestEngineOptions = { resourceKey: resourceKey };
+    const cloudRequestEngineOptions = { 
+      resourceKey: resourceKey,
+      cloudRequestOrigin: cloudRequestOrigin 
+    };
     if (baseURL !== null) {
       cloudRequestEngineOptions.baseURL = baseURL;
     }
