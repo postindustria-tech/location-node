@@ -61,17 +61,17 @@ try {
 }
 
 if (isAsync) {
-  test('cloud getting started', (done) => {
+  test('cloud getting started', async (done) => {
     setTimeout(done, 1000);
 
     testExample({ file: (__dirname) + '/gettingStarted.js' });
   });
-  test('combining services', (done) => {
+  test('combining services', async (done) => {
     setTimeout(done, 1000);
 
     testExample({ file: (__dirname) + '/combiningServices.js' });
   });
-  test('configure from file', (done) => {
+  test('configure from file', async (done) => {
     setTimeout(done, 1000);
 
     testExample({ file: (__dirname) + '/configureFromFile.js' });
