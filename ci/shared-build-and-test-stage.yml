@@ -28,6 +28,8 @@ stages:
           node_version: 12.x
         node_14_x:
           node_version: 14.x
+        node_16_x:
+          node_version: 16.x
       maxParallel: 1
     
     steps:
@@ -59,13 +61,14 @@ stages:
     # in 'InternalKeys' group
     # 2. Install dependencies.
     # 3. Run tests.
+    # TODO: Remove specific device detection version once 4.3.3 released
     - bash: |
         echo "Resource key for testing = $(SuperResourceKey)"
         export RESOURCE_KEY="$(SuperResourceKey)"
         echo "Cloud endpoint for testing = $(FOD_CLOUD_API_URL)"
         export FOD_CLOUD_API_URL="$(FOD_CLOUD_API_URL)"
         npm install
-        npm install fiftyone.devicedetection
+        npm install fiftyone.devicedetection@4.3.3-beta.1
         npm test
       displayName: 'Build and Test'
     
@@ -105,7 +108,7 @@ stages:
         echo $eslint
         echo $eslint > .eslintrc
         npm install -g eslint@6.8.0
-        eslint **/*.js
+        eslint '**/*.js'
       displayName: "Set up and run eslint"
       condition: ne(variables['node_version'], '6.x')
       failOnStderr: true
