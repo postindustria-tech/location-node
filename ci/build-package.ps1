@@ -5,9 +5,9 @@ param (
     [string]$Version
 )
 
-$packages = "fiftyone.pipeline.cloudrequestengine", "fiftyone.pipeline.core", "fiftyone.pipeline.engines", "fiftyone.pipeline.engines.fiftyone"
+$packages = "."
 
-$noRemote = "fiftyone.pipeline.core"
+$noRemote = ""
 
 ./node/build-package-npm.ps1 -RepoName $RepoName -Packages $packages -NoRemote $noRemote -Version $Version
 
