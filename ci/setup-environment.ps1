@@ -12,8 +12,8 @@ $packageJSON = @"
     "description": "Temporary package to allow all tests to run using the local code as dependencies",
     "main": "index.js",
     "scripts": {
-        "unit-test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --testPathIgnorePatterns '.*integration.*'",
-        "integration-test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura --testMatch '**/*integration*.js'"
+        "unit-test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
+        "integration-test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura"
     },
     "repository": {
         "type": "git", "url": "https://github.com/51Degrees/pipeline-node"

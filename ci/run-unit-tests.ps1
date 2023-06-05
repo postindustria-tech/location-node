@@ -3,6 +3,6 @@ param (
     [string]$RepoName
 )
 
-./node/run-unit-tests.ps1 -RepoName $RepoName
+Write-Output "No unit tests specified"
 
 exit $LASTEXITCODE
