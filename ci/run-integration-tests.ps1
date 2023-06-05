@@ -3,6 +3,17 @@ param (
     [string]$RepoName
 )
 
-./node/run-integration-tests.ps1 -RepoName $RepoName
+Push-Location $RepoName
 
-exit $LASTEXITCODE
+try
+{
+    Write-Output "Running integration tests"
+    $env:JEST_JUNIT_OUTPUT_DIR = 'test-results/integration'
+    npm run test
+} finally {
+    Pop-Location
+}
+
+if ($LASTEXITCODE -ne 0) {
+    exit $LASTEXITCODE
+}
