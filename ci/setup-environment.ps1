@@ -11,6 +11,9 @@ $packageJSON = @"
     "version": "1.0.0",
     "description": "Temporary package to allow all tests to run using the local code as dependencies",
     "main": "index.js",
+    "directories": {
+        "test": "tests"
+    },
     "scripts": {
         "unit-test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
         "integration-test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura"
@@ -33,8 +36,12 @@ $packageJSON = @"
         "eslint-plugin-standard": "4.0.1",
         "eslint-plugin-jsdoc": "25.4.0"
     },
-    "jest":{
-        "setupFilesAfterEnv": ["./setup.js"]
+    "jest": {
+        "testRunner": "jest-jasmine2",
+        "setupFilesAfterEnv": [
+          "./setup.js",
+          "jest-expect-message"
+        ]
     }
 }
 "@
