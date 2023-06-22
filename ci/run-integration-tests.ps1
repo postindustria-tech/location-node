@@ -1,6 +1,8 @@
 param (
     [Parameter(Mandatory=$true)]
-    [string]$RepoName
+    [string]$RepoName,
+    [Parameter(Mandatory=$true)]
+    $Keys
 )
 
 Push-Location $RepoName
@@ -8,7 +10,7 @@ Push-Location $RepoName
 try
 {
     Write-Output "Running integration tests"
-    $env:RESOURCE_KEY = $Options.Keys.TestResourceKey
+    $env:RESOURCE_KEY = $Keys.TestResourceKey
     $env:JEST_JUNIT_OUTPUT_DIR = 'test-results/integration'
     npm run test
 } finally {
