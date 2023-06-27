@@ -107,20 +107,6 @@ if (isAsync) {
     await testAvailableProperties(done, pipeline, engine);
   });
 
-  test('Available Properties Digital Element', async done => {
-    if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
-      throw new Error('No resource key is present!');
-    }
-
-    const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
-      resourceKey: myResourceKey,
-      locationProvider: 'digitalelement'
-    }).build();
-    var engine = pipeline.flowElements.location_digitalelement;
-
-    await testAvailableProperties(done, pipeline, engine);
-  });
-
   test('Value Types 51Degrees', async done => {
     if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
       throw new Error('No resource key is present!');
@@ -131,20 +117,6 @@ if (isAsync) {
       locationProvider: 'fiftyonedegrees'
     }).build();
     var engine = pipeline.flowElements.location;
-
-    await testValueTypes(done, pipeline, engine);
-  });
-
-  test('Value Types DigitalElement', async done => {
-    if (myResourceKey === '!!YOUR_RESOURCE_KEY!!') {
-      throw new Error('No resource key is present!');
-    }
-
-    const pipeline = new GeoLocation.GeoLocationPipelineBuilder({
-      resourceKey: myResourceKey,
-      locationProvider: 'digitalelement'
-    }).build();
-    var engine = pipeline.flowElements.location_digitalelement;
 
     await testValueTypes(done, pipeline, engine);
   });
