@@ -17,10 +17,10 @@
     "Joseph Dix <joseph@51degrees.com> (https://51degrees.com)"
   ],
   "dependencies": {
-    "fiftyone.pipeline.cloudrequestengine": "^4.4.34",
-    "fiftyone.pipeline.core": "^4.4.34",
-    "fiftyone.pipeline.engines": "^4.4.34",
-    "fiftyone.pipeline.engines.fiftyone": "^4.4.34"
+    "fiftyone.pipeline.cloudrequestengine": "^4.4.35",
+    "fiftyone.pipeline.core": "^4.4.35",
+    "fiftyone.pipeline.engines": "^4.4.35",
+    "fiftyone.pipeline.engines.fiftyone": "^4.4.35"
   },
   "devDependencies": {
     "@types/node": "^15.14.9",
