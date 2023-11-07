@@ -1173,13 +1173,14 @@ HTML_EXTRA_STYLESHEET  =
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       =  ../../documentation/docs/images/icon-arrow-left-black.svg \
-                          ../../documentation/docs/images/icon-arrow-right-black.svg \
-                          ../../documentation/docs/images/icon-arrow-solid-right-mute.svg \
-                          ../../documentation/docs/images/icon-arrow-solid-right-orange.svg \
-                          ../../documentation/docs/images/icon-search.svg \
-                          ../../documentation/docs/examplegrabber.js \
-                          ../../documentation/docs/search51.js
+HTML_EXTRA_FILES       = ../../documentation/docs/images/icon-arrow-left-black.svg \
+                         ../../documentation/docs/images/icon-arrow-right-black.svg \
+                         ../../documentation/docs/images/icon-arrow-solid-right-mute.svg \
+                         ../../documentation/docs/images/icon-arrow-solid-right-orange.svg \
+                         ../../documentation/docs/images/icon-search.svg \
+                         ../../documentation/docs/examplegrabber.js \
+                         ../../documentation/docs/testedversionsgrabber.js \
+                         ../../documentation/docs/search51.js
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
