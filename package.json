@@ -1,7 +1,8 @@
 {
   "name": "fiftyone.geolocation",
   "version": "1.0.21",
-  "description": "Geo-location services for the 51Degrees Pipeline API",
+  "description": "Perform reverse geocoding using longitude and latitude to populate postal addresses",
+  "keywords": ["51Degrees", "geolocation", "location", " latitude", "longitude", "reverse-geocode"],
   "main": "index.js",
   "types": "types/index.d.ts",
   "directories": {
