@@ -64,17 +64,19 @@ if (isAsync) {
   test('cloud getting started', async (done) => {
     setTimeout(done, 1000);
 
-    testExample({ file: (__dirname) + '/gettingStarted.js' });
+    testExample({ file: path.resolve(__dirname, 'gettingStarted.js') });
   });
+
   test('combining services', async (done) => {
     setTimeout(done, 1000);
 
-    testExample({ file: (__dirname) + '/combiningServices.js' });
+    testExample({ file: path.resolve(__dirname, 'combiningServices.js') });
   });
+
   test('configure from file', async (done) => {
     setTimeout(done, 1000);
 
-    testExample({ file: (__dirname) + '/configureFromFile.js' });
+    testExample({ file: path.resolve(__dirname, 'configureFromFile.js') });
   });
 } else {
   // Skip if async is not available (e.g node 6)

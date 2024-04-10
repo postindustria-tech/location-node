@@ -55,7 +55,9 @@ let localResourceKey;
 try {
   localResourceKey = resourceKey;
 } catch (e) {
-  if (e instanceof ReferenceError) {}
+  if (e instanceof ReferenceError) {
+    console.log(e);
+  }
 }
 // You need to create a resource key at https://configure.51degrees.com and
 // paste it into the code, replacing !!YOUR_RESOURCE_KEY!!.

@@ -63,7 +63,6 @@ const configFile = fs.readFileSync((process.env.directory || __dirname) +
 const config = JSON.parse(configFile);
 let resourceKeySet = true;
 let resourceKeySetFromFile = true;
-
 // Check if a resource key has been set in the config file.
 if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
   .startsWith('!!')) {
@@ -73,7 +72,9 @@ if (config.PipelineOptions.Elements[0].elementParameters.resourceKey
   try {
     myResourceKey = resourceKey;
   } catch (e) {
-    if (e instanceof ReferenceError) {}
+    if (e instanceof ReferenceError) {
+      console.log(e);
+    }
   }
 
   // If not, check the resource key environment variable.
