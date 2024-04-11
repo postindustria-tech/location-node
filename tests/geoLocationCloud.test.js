@@ -20,8 +20,9 @@
  * such notice(s) shall fulfill the requirements of that article.
  * ********************************************************************* */
 
-const GeoLocation = require(__dirname +
-    '/..');
+const path = require('path');
+
+const GeoLocation = require(path.resolve(__dirname, '..'));
 const myResourceKey = process.env.RESOURCE_KEY || '!!YOUR_RESOURCE_KEY!!';
 
 const TestLat = '51.4578261';

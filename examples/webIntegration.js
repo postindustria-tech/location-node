@@ -100,16 +100,20 @@ if (myResourceKey.substring(0, 2) === '!!') {
     </p>
     <dl>
         <dt><strong>Country</strong></dt>
-        <dv>` + (data && data.country && data.country.hasValue ? data.country.value
+        <dv>` + (data && data.country && data.country.hasValue
+            ? data.country.value
             : ('Unknown (' + (data && data.country ? data.country.noValueMessage : 'no data') + ')')) + `</dv>
         <dt><strong>State</strong></dt>
-        <dv>` + (data && data.state && data.state.hasValue ? data.state.value
+        <dv>` + (data && data.state && data.state.hasValue
+            ? data.state.value
             : ('Unknown (' + (data && data.state ? data.state.noValueMessage : 'no data') + ')')) + `</dv>          
         <dt><strong>County</strong></dt>
-        <dv>` + (data && data.county && data.county.hasValue ? data.county.value
+        <dv>` + (data && data.county && data.county.hasValue
+            ? data.county.value
             : ('Unknown (' + (data && data.county ? data.county.noValueMessage : 'no data') + ')')) + `</dv>
         <dt><strong>Town/City</strong></dt>
-        <dv>` + (data && data.town && data.town.hasValue ? data.town.value
+        <dv>` + (data && data.town && data.town.hasValue
+            ? data.town.value
             : ('Unknown (' + (data && data.town ? data.town.noValueMessage : 'no data') + ')')) + `</dv>
     </dl>
     <p>
