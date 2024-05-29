@@ -54,8 +54,8 @@ class GeoLocationPipelineBuilder extends PipelineBuilder {
     // First we need the cloudRequestEngine
 
     const cloudRequestEngineOptions = {
-      resourceKey: resourceKey,
-      cloudRequestOrigin: cloudRequestOrigin
+      resourceKey,
+      cloudRequestOrigin
     };
     if (baseURL !== null) {
       cloudRequestEngineOptions.baseURL = baseURL;
@@ -65,7 +65,7 @@ class GeoLocationPipelineBuilder extends PipelineBuilder {
 
     // Then add the cloud geo-location engine
 
-    this.flowElements.push(new GeoLocationCloud({ locationProvider: locationProvider }));
+    this.flowElements.push(new GeoLocationCloud({ locationProvider }));
   }
 }
 
