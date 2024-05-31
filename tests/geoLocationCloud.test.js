@@ -103,7 +103,7 @@ if (isAsync) {
       resourceKey: myResourceKey,
       locationProvider: 'fiftyonedegrees'
     }).build();
-    var engine = pipeline.flowElements.location;
+    const engine = pipeline.flowElements.location;
 
     await testAvailableProperties(done, pipeline, engine);
   });
@@ -117,7 +117,7 @@ if (isAsync) {
       resourceKey: myResourceKey,
       locationProvider: 'fiftyonedegrees'
     }).build();
-    var engine = pipeline.flowElements.location;
+    const engine = pipeline.flowElements.location;
 
     await testValueTypes(done, pipeline, engine);
   });
@@ -136,7 +136,7 @@ async function testAvailableProperties (done, pipeline, engine) {
 
   expectedProperties[engine.dataKey].forEach(key => {
     try {
-      var apv = flowData[engine.dataKey][key];
+      const apv = flowData[engine.dataKey][key];
       if (apv === undefined) {
         done.fail(new Error(`Aspect property value for ${key} should not be undefined.`));
       }
@@ -168,9 +168,9 @@ async function testValueTypes (done, pipeline, engine) {
 
   Object.keys(engine.properties).forEach(key => {
     if (expectedProperties[engine.dataKey].includes(key)) {
-      var property = engine.properties[key.toLowerCase()];
-      var expectedType = property.type;
-      var apv = flowData[engine.dataKey][key];
+      const property = engine.properties[key.toLowerCase()];
+      const expectedType = property.type;
+      const apv = flowData[engine.dataKey][key];
 
       expect(apv).not.toBeNull();
       expect(apv).toBeDefined();
@@ -185,8 +185,8 @@ async function testValueTypes (done, pipeline, engine) {
 expect.extend({
   // Method to validate a given value has the expected type.
   toBe51DType (received, name, fodType) {
-    var valueType = typeof received;
-    var valid = false;
+    const valueType = typeof received;
+    let valid = false;
 
     switch (fodType) {
       case 'Boolean':

@@ -87,7 +87,7 @@ if (myResourceKey.substring(0, 2) === '!!') {
 
         let output = '';
 
-        var data = flowData.location;
+        const data = flowData.location;
         console.log(data);
         // Print results of client side processing to the page.
         output += `<h2>Example</h2>
