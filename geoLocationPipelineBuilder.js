@@ -34,6 +34,7 @@ class GeoLocationPipelineBuilder extends PipelineBuilder {
      * @param {String} options.locationProvider // the provider to request data from. Either "fiftyonedegrees" or "digitalelement".
      * @param {string} options.cloudRequestOrigin The value to set the
      * Origin header to when making requests to the cloud service
+     * @param {string} options.baseURL base URL for cloud request
      *
     */
   constructor ({
