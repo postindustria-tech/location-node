@@ -2,7 +2,14 @@
   "name": "fiftyone.geolocation",
   "version": "1.0.21",
   "description": "Perform reverse geocoding using longitude and latitude to populate postal addresses",
-  "keywords": ["51Degrees", "geolocation", "location", " latitude", "longitude", "reverse-geocode"],
+  "keywords": [
+    "51Degrees",
+    "geolocation",
+    "location",
+    " latitude",
+    "longitude",
+    "reverse-geocode"
+  ],
   "main": "index.js",
   "types": "types/index.d.ts",
   "directories": {
@@ -10,7 +17,8 @@
   },
   "scripts": {
     "test": "jest --ci --reporters=jest-junit --reporters=default --coverage --coverageReporters=cobertura",
-    "lint": "eslint . --ext .js"
+    "lint": "eslint . --ext .js",
+    "tsc": "tsc -b --force"
   },
   "author": "51Degrees Engineering <engineering@51degrees.com>",
   "dependencies": {
@@ -24,14 +32,15 @@
     "eslint": "8.57.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^23.13.2",
     "eslint-plugin-jsdoc": "^38.1.6",
+    "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
-    "eslint-plugin-jest": "^23.13.2",
-    "eslint-plugin-n": "^15.0.0",
     "jest": "^27.5.1",
     "jest-expect-message": "^1.1.3",
-    "jest-junit": "^9.0.0"
+    "jest-junit": "^9.0.0",
+    "typescript": "^5.4.5"
   },
   "license": "EUPL-1.2",
   "bugs": {

@@ -1,2 +1,2 @@
-export const GeoLocationCloud: typeof import("./geoLocationCloud");
-export const GeoLocationPipelineBuilder: typeof import("./geoLocationPipelineBuilder");
+export let GeoLocationCloud: typeof import("./geoLocationCloud");
+export let GeoLocationPipelineBuilder: typeof import("./geoLocationPipelineBuilder");

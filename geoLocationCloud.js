@@ -23,6 +23,12 @@
 const CloudEngine = require('fiftyone.pipeline.cloudrequestengine').CloudEngine;
 
 class GeoLocationCloud extends CloudEngine {
+  /**
+   * Constructor for GeoLocationCloud
+   *
+   * @param {object} options the options for GeoLocationCloud
+   * @param {string} options.locationProvider name of location provider
+   */
   constructor ({ locationProvider }) {
     super(...arguments);
     if (locationProvider === 'fiftyonedegrees') {
