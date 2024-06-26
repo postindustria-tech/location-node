@@ -13,6 +13,10 @@
     "lint": "eslint . --ext .js"
   },
   "author": "51Degrees Engineering <engineering@51degrees.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/51Degrees/location-node"
+  },
   "dependencies": {
     "fiftyone.pipeline.cloudrequestengine": "4.4.x",
     "fiftyone.pipeline.core": "4.4.x",
